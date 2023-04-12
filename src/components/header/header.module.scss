@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 36px 30px;
+
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+  }
+}
+
+.logo {
+}
+
+.links {
+  ul {
+    display: flex;
+    flex-direction: row;
+    gap: 36px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 25px;
+  }
+}
+
+.theta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: 25px;
+}

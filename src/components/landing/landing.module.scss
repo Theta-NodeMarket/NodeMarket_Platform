@@ -1,0 +1,30 @@
+.landing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.headline {
+  font-size: 36px;
+}
+
+.cta {
+  margin: 36px 0;
+  padding: 16px 64px;
+  background-color: #5cc542;
+  border-radius: 10px;
+  box-shadow: #0004 0px 4px 4px;
+  color: #334551;
+  font-size: 25px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover,
+  &:focus {
+    background-color: white;
+    color: black;
+    transform: scale(1.1);
+  }
+}
