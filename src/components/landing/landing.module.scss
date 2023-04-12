@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin: 0 30px;
 }
 
 .headline {
@@ -13,7 +14,7 @@
 
 .cta {
   margin: 36px 0;
-  padding: 16px 64px;
+  padding: 16px 72px;
   background-color: #5cc542;
   border-radius: 10px;
   box-shadow: #0004 0px 4px 4px;
@@ -24,7 +25,6 @@
   &:hover,
   &:focus {
     background-color: white;
-    color: black;
-    transform: scale(1.1);
+    transform: scale(1.025);
   }
 }
