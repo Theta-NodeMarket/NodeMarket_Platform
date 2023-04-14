@@ -26,11 +26,13 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
+  background-color: black;
   background-image: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.5)
+      to right,
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0)
     ),
+    linear-gradient(to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
     url("../assets/stars.jpg");
 
   background-repeat: no-repeat;
