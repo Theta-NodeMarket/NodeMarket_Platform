@@ -1,0 +1,24 @@
+.paragraph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.heading {
+  color: var(--main-color);
+  font-size: 36px;
+}
+
+.stanza_wrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: 18px;
+}
+
+.body1,
+.body2 {
+  color: var(--main-white);
+  font-size: 25px;
+}

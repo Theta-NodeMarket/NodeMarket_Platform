@@ -1,0 +1,13 @@
+.learnMore {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 30px;
+}
+
+.learnMore_paragraph_wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
+}

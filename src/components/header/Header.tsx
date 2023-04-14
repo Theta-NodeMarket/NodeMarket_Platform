@@ -1,9 +1,9 @@
-import React from 'react';
-import styles from './header.module.scss';
-import Image from 'next/image';
-import Link from 'next/link';
-import logo from '../../assets/nodemarket.svg';
-import theta from '../../assets/theta.svg';
+import React from "react";
+import styles from "./header.module.scss";
+import Image from "next/image";
+import Link from "next/link";
+import logo from "../../assets/nodemarket.svg";
+import theta from "../../assets/theta.svg";
 
 export function Header() {
   return (
@@ -16,22 +16,19 @@ export function Header() {
 
       <nav className={styles.links}>
         <ul>
-          <li>
+          <li className={styles.link}>
             <Link href="">Sign In</Link>
           </li>
-          <li>
-            <Link href="">Learn More</Link>
+          <li className={styles.link}>
+            <Link href="/learnMore">Learn More</Link>
           </li>
-          <li>
+          <li className={styles.link}>
             <Link href="">About Us</Link>
           </li>
         </ul>
       </nav>
 
-      <Link
-        href="https://www.thetatoken.org/"
-        className={styles.theta}
-      >
+      <Link href="https://www.thetatoken.org/" className={styles.theta}>
         <span>Powered by</span>
         <Image src={theta} alt="Powered by Theta" />
       </Link>

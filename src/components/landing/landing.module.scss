@@ -9,22 +9,23 @@
 }
 
 .headline {
+  color: var(--main-white);
   font-size: 36px;
 }
 
 .cta {
   margin: 36px 0;
   padding: 16px 72px;
-  background-color: #5cc542;
+  background-color: var(--main-color);
   border-radius: 10px;
   box-shadow: #0004 0px 4px 4px;
-  color: #334551;
+  color: var(--button-text-color);
   font-size: 25px;
   transition: all 0.3s ease-in-out;
 
   &:hover,
   &:focus {
-    background-color: white;
+    background-color: var(--main-white);
     transform: scale(1.025);
   }
 }
