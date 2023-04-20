@@ -6,12 +6,9 @@
   align-items: center;
   padding: 36px 30px;
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     flex-direction: column;
   }
-}
-
-.logo {
 }
 
 .links {
@@ -20,11 +17,8 @@
     flex-direction: row;
     list-style: none;
     font-size: 25px;
+    gap: 30px;
   }
-}
-
-.link {
-  padding: 0 30px;
 }
 
 .theta {
