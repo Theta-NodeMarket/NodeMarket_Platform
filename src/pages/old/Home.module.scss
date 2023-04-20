@@ -97,7 +97,7 @@
 
 .center::before,
 .center::after {
-  content: '';
+  content: "";
   left: 50%;
   position: absolute;
   filter: blur(45px);
@@ -183,7 +183,7 @@
     //   rgba(var(--background-start-rgb), 1),
     //   rgba(var(--callout-rgb), 0.5)
     // );
-    background-image: url('../assets/stars.jpg');
+    background-image: url("../assets/stars.jpg");
     background-clip: padding-box;
     backdrop-filter: blur(24px);
   }

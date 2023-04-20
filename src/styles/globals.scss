@@ -1,17 +1,16 @@
 :root {
   --max-width: 1100px;
   --button-border-radius: 10px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono',
-    'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace',
-    'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New',
-    monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
   --main-color: #5cc542;
   --main-white: #fafafa;
   --button-text-color: #334551;
 }
 
 * {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 300;
   box-sizing: border-box;
   padding: 0;
@@ -28,14 +27,14 @@ body {
 body {
   color: rgb(var(--foreground-rgb));
   background-color: black;
-  background-image: url('../assets/stars.jpg');
+  background-image: url("../assets/stars.jpg");
   background-image: linear-gradient(
       to right,
       rgba(0, 0, 0, 1),
       rgba(0, 0, 0, 0)
     ),
     linear-gradient(to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-    url('../assets/stars.jpg');
+    url("../assets/stars.jpg");
 
   background-repeat: no-repeat;
   background-size: cover;
