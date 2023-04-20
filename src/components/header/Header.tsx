@@ -20,7 +20,7 @@ export function Header() {
             <Link href="">Sign In</Link>
           </li>
           <li className={styles.link}>
-            <Link href="/learnMore">Learn More</Link>
+            <Link href="/learnmore">Learn More</Link>
           </li>
           <li className={styles.link}>
             <Link href="/about">About Us</Link>
