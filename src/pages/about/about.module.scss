@@ -1,0 +1,27 @@
+.learnMore {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 30px;
+}
+
+.paragraph {
+  font-size: 25px;
+  margin: auto;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--main-white);
+  text-align: justify;
+
+  & > * {
+    margin-bottom: 1em;
+  }
+}
+
+.heading {
+  color: var(--main-color);
+  font-size: 36px;
+}
