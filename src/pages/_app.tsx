@@ -8,7 +8,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { useState } from "react";
 import type { AppProps } from "next/app";
-
+import { supabase } from '../lib/initSupabase'
+import { Auth } from '@supabase/auth-ui-react'
 import theme from "@/styles/theme";
 import "@/styles/globals.scss";
 
@@ -17,13 +18,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider theme={theme}>
-      <SessionContextProvider
-        supabaseClient={supabase}
-        initialSession={pageProps.initialSession}
-      >
+      <Auth.UserContextProvider supabaseClient={supabase}>
         <CssBaseline />
         <Component {...pageProps} />
-      </SessionContextProvider>
+      </Auth.UserContextProvider>
     </ThemeProvider>
   );
 }
