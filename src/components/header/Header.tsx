@@ -17,13 +17,13 @@ export function Header() {
       <nav className={styles.links}>
         <ul>
           <li className={styles.link}>
-            <Link href="">Sign In</Link>
+            <Link href="sign-up">Sign Up</Link>
           </li>
           <li className={styles.link}>
-            <Link href="/learnmore">Learn More</Link>
+            <Link href="/learn-more">Learn More</Link>
           </li>
           <li className={styles.link}>
-            <Link href="/about">About Us</Link>
+            <Link href="/about-us">About Us</Link>
           </li>
         </ul>
       </nav>

@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Header } from "../header";
+import styles from './layout.module.css'
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -11,7 +12,9 @@ export default function Layout({ children }: PropsWithChildren) {
       }}
     >
       <Header />
-      {children}
+      <div className={styles.wrapper}>
+        {children}
+      </div>
     </div>
   );
 }
