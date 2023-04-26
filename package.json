@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
+    "@hookform/resolvers": "^3.1.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.0",
     "@supabase/auth-helpers-nextjs": "^0.6.0",
@@ -26,7 +27,9 @@
     "next": "13.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
     "sass": "^1.62.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "yup": "^1.1.1"
   }
 }
