@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import styles from "./signup.module.scss";
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState } from "react";
 import { AuthControl } from "../api/AuthController";
 import { useRouter } from "next/router";
 import { signUpSchema } from "../../validationSchemas/SignUpValidation";
@@ -53,7 +53,7 @@ const signUpDetails = {
   serverError: "",
 };
 
-export default function SignUp() {
+export default function SignUp({setLoading}: any) {
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
   const [state, dispatch] = useReducer(reducer, signUpDetails);
@@ -64,22 +64,6 @@ export default function SignUp() {
   } = useForm({
     resolver: yupResolver(signUpSchema),
   });
-
-  useEffect(() => {
-    async function ValidateUser() {
-      const { user } = await AuthControl.GetUser();
-      console.log(user);
-
-      if(user === null || user === undefined)
-      {
-        return;
-      }
-
-      router.push("/dashboard");
-    }
-
-    ValidateUser();
-  }, [router]);
 
   const handleEmailChange = (e: any) => {
     dispatch({
@@ -96,9 +80,11 @@ export default function SignUp() {
   };
 
   const submitForm = async (e: any) => {
+    setLoading(true);
     const response = await AuthControl.SignUp(state.email, state.password);
 
     if (response.error !== null) {
+      setLoading(false);
       setServerError(true);
       dispatch({
         type: "updateServerError",

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 function Content({ loading }: any) {
   if (loading) {
-    return <div><CircularProgress color="primary"/></div>;
+    return <div style={{width: "100vw", display: "flex", justifyContent: "center"}}><CircularProgress color="primary"/></div>;
   }
   return <Button variant="contained">You are logged in</Button>;
 }
