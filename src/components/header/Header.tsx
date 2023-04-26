@@ -10,7 +10,7 @@ export function Header() {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href="/">
-          <Image src={logo} alt="NodeMarket Logo" />
+          <Image src={logo} alt="NodeMarket Logo"/>
         </Link>
       </div>
 

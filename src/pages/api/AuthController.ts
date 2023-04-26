@@ -14,7 +14,7 @@ class AuthController {
 
   // On sign in create and save cookie on client when auth
   // assuming there is no cookie already
-  async SignIn(email: string, password: string): Promise<object> {
+  async SignIn(email: string, password: string): Promise<{data: any, error: any}> {
     let { data, error } = await DbClient.auth.signInWithPassword({
       email: email,
       password: password,

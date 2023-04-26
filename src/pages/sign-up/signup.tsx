@@ -68,8 +68,6 @@ export default function SignUp() {
   useEffect(() => {
     async function ValidateUser() {
       const { user } = await AuthControl.GetUser();
-      console.log(user);
-
       if(user === null || user === undefined)
       {
         return;
@@ -143,6 +141,7 @@ export default function SignUp() {
               variant="standard"
               required
               fullWidth
+              autoComplete="email"
               value={state.email}
               onChange={(e) => handleEmailChange(e)}
             />
@@ -158,6 +157,7 @@ export default function SignUp() {
               variant="standard"
               required
               fullWidth
+              autoComplete="new-password"
               value={state.password}
               onChange={(e) => handlePasswordChange(e)}
             />

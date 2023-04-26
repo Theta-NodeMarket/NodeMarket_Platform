@@ -9,7 +9,7 @@ import {
   Divider,
 } from "@mui/material";
 import styles from "./signin.module.scss";
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 import { AuthControl } from "../api/AuthController";
 import { useRouter } from "next/router";
 import { signInSchema } from "../../validationSchemas/SignInValidation";
@@ -64,6 +64,20 @@ export default function SignIn() {
   } = useForm({
     resolver: yupResolver(signInSchema),
   });
+
+  useEffect(() => {
+    async function ValidateUser() {
+      const { user } = await AuthControl.GetUser();
+      if(user === null || user === undefined)
+      {
+        return;
+      }
+
+      router.push("/dashboard");
+    }
+
+    ValidateUser();
+  }, [router]);
 
   const handleEmailChange = (e: any) => {
     dispatch({
@@ -127,6 +141,7 @@ export default function SignIn() {
               variant="standard"
               required
               fullWidth
+              autoComplete="email"
               value={state.email}
               onChange={(e) => handleEmailChange(e)}
             />
@@ -142,6 +157,7 @@ export default function SignIn() {
               variant="standard"
               required
               fullWidth
+              autoComplete="current-password"
               value={state.password}
               onChange={(e) => handlePasswordChange(e)}
             />
