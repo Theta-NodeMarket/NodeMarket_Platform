@@ -24,7 +24,7 @@ class AuthController {
   }
 
   async GetUser(): Promise<any> {
-    const { data } = await DbClient.auth.getUser();
+    const { data, error } = await DbClient.auth.getUser();
     return data;
   }
 

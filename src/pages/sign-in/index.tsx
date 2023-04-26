@@ -10,8 +10,6 @@ export default function SignInPage() {
   useEffect(() => {
     async function ValidateUser() {
       const { user } = await AuthControl.GetUser();
-      console.log(user);
-
       if(user === null || user === undefined)
       {
         return;
