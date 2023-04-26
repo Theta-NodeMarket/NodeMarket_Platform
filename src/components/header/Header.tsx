@@ -17,7 +17,7 @@ export function Header() {
       <nav className={styles.links}>
         <ul>
           <li className={styles.link}>
-            <Link href="sign-up">Sign Up</Link>
+            <Link href="sign-in">Sign In</Link>
           </li>
           <li className={styles.link}>
             <Link href="/learn-more">Learn More</Link>
