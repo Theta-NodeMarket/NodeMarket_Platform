@@ -53,7 +53,7 @@ const signInDetails = {
   serverError: "",
 };
 
-export default function SignUp({ setLoading }: any) {
+export default function SignUp() {
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
   const [state, dispatch] = useReducer(reducer, signInDetails);
@@ -80,11 +80,9 @@ export default function SignUp({ setLoading }: any) {
   };
 
   const submitForm = async (e: any) => {
-    setLoading(true);
     const response = await AuthControl.SignIn(state.email, state.password);
 
     if (response.error !== null) {
-      setLoading(false);
       setServerError(true);
       dispatch({
         type: "updateServerError",
