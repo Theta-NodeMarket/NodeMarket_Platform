@@ -53,7 +53,7 @@ const signInDetails = {
   serverError: "",
 };
 
-export default function SignUp() {
+export default function SignIn() {
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
   const [state, dispatch] = useReducer(reducer, signInDetails);
