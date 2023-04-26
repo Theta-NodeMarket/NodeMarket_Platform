@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {Button} from "@mui/material";
 import React from "react";
 
 import styles from "./landing.module.scss";
@@ -10,9 +11,9 @@ export default function Landing() {
         Looking to create a new revenue stream or share your brand with the
         world?
       </h1>
-      <Link className={styles.cta} href="/">
+      <Button className={styles.cta} variant="contained" size="large" href="/sign-up">
         Let&apos;s get started!
-      </Link>
+      </Button>
     </section>
   );
 }

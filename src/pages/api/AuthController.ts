@@ -20,7 +20,7 @@ class AuthController {
       password: password,
     });
 
-    return data;
+    return {data, error};
   }
 
   async GetUser(): Promise<any> {

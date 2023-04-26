@@ -6,13 +6,13 @@ import {
   Typography,
   Alert,
   Collapse,
+  Divider,
 } from "@mui/material";
-import Link from "next/link";
-import styles from "./signup.module.scss";
-import { useReducer, useState, useEffect } from "react";
+import styles from "./signin.module.scss";
+import { useReducer, useState } from "react";
 import { AuthControl } from "../api/AuthController";
 import { useRouter } from "next/router";
-import { signUpSchema } from "../../validationSchemas/SignUpValidation";
+import { signInSchema } from "../../validationSchemas/SignInValidation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -47,7 +47,7 @@ const reducer = (state: any, action: any) => {
   }
 };
 
-const signUpDetails = {
+const signInDetails = {
   email: "",
   password: "",
   serverError: "",
@@ -56,30 +56,14 @@ const signUpDetails = {
 export default function SignUp() {
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
-  const [state, dispatch] = useReducer(reducer, signUpDetails);
+  const [state, dispatch] = useReducer(reducer, signInDetails);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(signUpSchema),
+    resolver: yupResolver(signInSchema),
   });
-
-  useEffect(() => {
-    async function ValidateUser() {
-      const { user } = await AuthControl.GetUser();
-      console.log(user);
-
-      if(user === null || user === undefined)
-      {
-        return;
-      }
-
-      router.push("/dashboard");
-    }
-
-    ValidateUser();
-  }, [router]);
 
   const handleEmailChange = (e: any) => {
     dispatch({
@@ -96,7 +80,7 @@ export default function SignUp() {
   };
 
   const submitForm = async (e: any) => {
-    const response = await AuthControl.SignUp(state.email, state.password);
+    const response = await AuthControl.SignIn(state.email, state.password);
 
     if (response.error !== null) {
       setServerError(true);
@@ -130,7 +114,7 @@ export default function SignUp() {
         >
           <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
             <Typography variant="h4" className={styles.heading}>
-              Create a new account
+              Sign In
             </Typography>
           </Grid>
           <Grid item xs={12} className={styles.gridItemInput}>
@@ -164,13 +148,13 @@ export default function SignUp() {
           </Grid>
           <Grid item xs={12} className={styles.gridItemButton}>
             <Button variant="contained" fullWidth type="submit">
-              Sign Up
+              Sign In
             </Button>
           </Grid>
-          <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
-            <Link className={styles.signInLink} href="/sign-in">
-              Already have an account?
-            </Link>
+          <Grid item xs={6} className={styles.gridItemHeadingAndLink}>
+            <Button variant="outlined" type="button" href="/sign-up">
+              Create new account
+            </Button>
           </Grid>
           <Grid item xs={12}>
             <Collapse in={serverError}>
