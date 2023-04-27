@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { signUpSchema } from "../../validationSchemas/SignUpValidation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRedirectIfUser } from "@/hooks";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -65,19 +66,7 @@ export default function SignUp() {
     resolver: yupResolver(signUpSchema),
   });
 
-  useEffect(() => {
-    async function ValidateUser() {
-      const { user } = await AuthControl.GetUser();
-      if(user === null || user === undefined)
-      {
-        return;
-      }
-
-      router.push("/dashboard");
-    }
-
-    ValidateUser();
-  }, [router]);
+  useRedirectIfUser();
 
   const handleEmailChange = (e: any) => {
     dispatch({

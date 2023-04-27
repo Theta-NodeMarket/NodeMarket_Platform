@@ -1,38 +1,22 @@
-import {Button, CircularProgress} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { AuthControl } from "../api/AuthController";
-import { useRouter } from "next/router";
-
-function Content({ loading }: any) {
-  if (loading) {
-    return <div style={{width: "100vw", display: "flex", justifyContent: "center"}}><CircularProgress color="primary"/></div>;
-  }
-  return <Button variant="contained">You are logged in</Button>;
-}
+import { Button, CircularProgress } from "@mui/material";
+import React from "react";
+import { useRedirectIfNotUser } from "@/hooks";
+import { Dashboard } from "./dashboard";
+import { DashboardLayout } from "@/components/dashboard/layout";
 
 export default function DashboardPage() {
-  const [Loading, setLoading] = useState(true);
-  const router = useRouter();
+  const { authLoading } = useRedirectIfNotUser();
 
-  // Route protection
-  useEffect(() => {
-    async function ValidateUser() {
-      const { user } = await AuthControl.GetUser();
-      if(user === null || user === undefined)
-      {
-        router.push("/sign-in");
-        return;
-      }
-      else
-      {
-        setLoading(false);
-      }
-    }
-
-    ValidateUser();
-  }, [router]);
+  if (authLoading)
+    return (
+      <DashboardLayout>
+        <CircularProgress color="primary" />
+      </DashboardLayout>
+    );
 
   return (
-    <Content loading={Loading}/>
+    <DashboardLayout>
+      <Dashboard />;
+    </DashboardLayout>
   );
 }
