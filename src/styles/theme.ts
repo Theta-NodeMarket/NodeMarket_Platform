@@ -28,11 +28,48 @@ const theme = createTheme({
       primary: "#fafafa",
     },
     background: {
-      default: "#181818",
-      paper: "#181818",
+      paper: "black",
     },
     info: {
       main: "#4072B4",
+    },
+  },
+  typography: {
+    h1: {
+      color: "#FAFAFA",
+    },
+    h2: {
+      color: "#FAFAFA",
+    },
+    h3: {
+      color: "#FAFAFA",
+    },
+    h4: {
+      color: "#FAFAFA",
+    },
+    h5: {
+      color: "#FAFAFA",
+    },
+    h6: {
+      color: "#FAFAFA",
+    },
+    subtitle1: {
+      color: "#FAFAFA",
+    },
+    subtitle2: {
+      color: "#FAFAFA",
+    },
+    body1: {
+      color: "#FAFAFA",
+    },
+    body2: {
+      color: "#FAFAFA",
+    },
+    caption: {
+      color: "#FAFAFA",
+    },
+    overline: {
+      color: "#FAFAFA",
     },
   },
 });
