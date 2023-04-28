@@ -2,7 +2,7 @@ import { Button, CircularProgress } from "@mui/material";
 import React from "react";
 import { useRedirectIfNotUser } from "@/hooks";
 import { Dashboard } from "./dashboard";
-import { DashboardLayout } from "@/components/dashboard/layout";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 
 export default function DashboardPage() {
   const { authLoading } = useRedirectIfNotUser();
@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <Dashboard />;
+      <Dashboard />
     </DashboardLayout>
   );
 }

@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
+  Typography,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
