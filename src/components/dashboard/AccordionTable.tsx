@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ReactNode, useMemo, useState } from "react";
-import { TablePagination } from "@mui/material";
+import { Box, TablePagination, Typography } from "@mui/material";
 
 interface AccordionTableRowProps {
   row: AccordionTableRow;
@@ -29,7 +29,7 @@ function AccordionTableRow({ row }: AccordionTableRowProps) {
           </TableCell>
         ))}
         <TableCell align="right" width="50" padding="checkbox" sx={{ pr: 1 }}>
-          {row?.hasExtraData ? (
+          {!!row?.extraData ? (
             <IconButton
               aria-label="expand row"
               size="small"
@@ -40,29 +40,31 @@ function AccordionTableRow({ row }: AccordionTableRowProps) {
           ) : null}
         </TableCell>
       </TableRow>
-      <TableRow>
-        {row?.hasExtraData ? (
-          <TableCell
-            style={{ paddingBottom: 0, paddingTop: 0 }}
-            colSpan={Object.keys(row.data).length + 1}
-          >
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <DisplayExtraData data={row.extraData} />
+      {!!row?.extraData ? (
+        <TableRow>
+          <TableCell sx={{ p: 0 }} colSpan={Object.keys(row.data).length + 1}>
+            <Collapse in={open} unmountOnExit>
+              <DisplayExtraData row={row} />
             </Collapse>
           </TableCell>
-        ) : null}
-      </TableRow>
+        </TableRow>
+      ) : null}
     </React.Fragment>
   );
 }
 
-export interface DisplayExtraDataProps {
-  data: AccordionTableRow["hasExtraData"];
-}
-
-// todo: get this working
-export const DisplayExtraData = ({ data }: DisplayExtraDataProps) => {
-  return <div>display some extra data in here</div>;
+export const DisplayExtraData = ({
+  row: { data, extraData },
+}: AccordionTableRowProps) => {
+  return (
+    <Box sx={{ p: 2, display: "flex", gap: 2 }}>
+      {Object.entries(extraData!).map(([key, value], index) => (
+        <Typography key={index}>
+          {key}: {value}
+        </Typography>
+      ))}
+    </Box>
+  );
 };
 
 export interface AccordionTableColumn {
@@ -74,9 +76,7 @@ export interface AccordionTableColumn {
 
 export interface AccordionTableRow {
   data: { [key: string]: any };
-  // todo: fix this up
-  hasExtraData?: boolean;
-  extraData?: any;
+  extraData?: { [key: string]: any };
 }
 
 export interface AccordionTableProps {
@@ -84,26 +84,29 @@ export interface AccordionTableProps {
   rows: AccordionTableRow[];
   paginationOptions?: {
     enablePagination: boolean;
-    initialRowsPerPage: number;
+    pageRowCount: number;
     rowsPerPageOptions: number[];
   };
 }
 
+const initialRowsPerPageOptions = Array.from(
+  { length: 6 },
+  (_, i) => (i + 2) ** 2 + 1
+);
+
+const initialPageRowCount = initialRowsPerPageOptions[1];
+
 export const AccordionTable = ({
   columns = [],
   rows = [],
-  paginationOptions: {
-    enablePagination,
-    initialRowsPerPage,
-    rowsPerPageOptions,
-  } = {
-    enablePagination: true,
-    initialRowsPerPage: 10,
-    rowsPerPageOptions: Array.from({ length: 6 }, (_, i) => (i + 2) ** 2 + 1),
+  paginationOptions: { enablePagination, pageRowCount, rowsPerPageOptions } = {
+    enablePagination: rows.length > initialPageRowCount,
+    pageRowCount: initialPageRowCount,
+    rowsPerPageOptions: initialRowsPerPageOptions,
   },
 }: AccordionTableProps) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
+  const [rowsPerPage, setRowsPerPage] = useState(pageRowCount);
 
   const visibleRows = useMemo(
     () =>

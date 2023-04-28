@@ -15,7 +15,7 @@ const COLUMNS = [{ label: "Name" }, { label: "Status" }];
 //   ),
 // },
 
-const rows = Array.from({ length: 200 }, (_, index) => {
+const rows = Array.from({ length: 100 }, (_, index) => {
   return {
     data: {
       name: <Link href={`/${2 ** index}`}>{2 ** index}</Link>,
@@ -26,7 +26,12 @@ const rows = Array.from({ length: 200 }, (_, index) => {
         </Box>
       ),
     },
-    hasExtraData: Boolean(Math.random() > 0.9),
+    extraData: Boolean(Math.random() > 0.5)
+      ? {
+          impressions: Math.floor(Math.random() * 1000),
+          clicks: Math.floor(Math.random() * 100),
+        }
+      : undefined,
   };
 });
 
