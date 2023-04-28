@@ -1,6 +1,8 @@
 import DashboardDisplayCard from "@/components/cards/dashboardDisplayCard";
 import DashboardErrorTooltip from "@/components/tooltips/dashboardErrorTooltip";
-import DashboardDateRangePicker from "@/components/datePickers/dashboardDateRangePicker";
+import DashboardWarningTooltip from "@/components/tooltips/dashboardWarningTooltip";
+import DashboardDateRangePicker from "@/components/inputs/dashboardDateRangePicker";
+import DashboardSelector from "@/components/inputs/dashboardSelector";
 import { AccordionTable } from "@/components/dashboard/AccordionTable";
 import Link from "next/link";
 import React from "react";
@@ -36,32 +38,62 @@ const rows = Array.from({ length: 100 }, (_, index) => {
 });
 
 export function Dashboard() {
+  const names = [
+    'Oliver Hansen',
+    'Van Henry',
+    'April Tucker',
+    'Ralph Hubbard',
+    'Omar Alexander',
+    'Carlos Abbott',
+    'Miriam Wagner',
+    'Bradley Wilkerson',
+    'Virginia Andrews',
+    'Kelly Snyder',
+  ];
+
   return (
     <>
-      {/* <div
+      { <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          flexWrap: "wrap",
           gap: "5em",
         }}
       >
-        <DashboardDateRangePicker />
+        <div 
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "5em",
+                }}>
+          <DashboardDateRangePicker />
+          <DashboardSelector title="Metric Filter" items={names}></DashboardSelector>
+          <DashboardSelector title="Advertisements" items={names}></DashboardSelector>
+        </div>
         <DashboardErrorTooltip title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "></DashboardErrorTooltip>
-        <DashboardDisplayCard
-          cardDisplayTitle="Total impressions"
-          cardDisplayValue="30"
-        />
-        <DashboardDisplayCard
-          cardDisplayTitle="Total clicks"
-          cardDisplayValue="25"
-        />
-        <DashboardDisplayCard
-          cardDisplayTitle="Click through rate"
-          cardDisplayValue="20%"
-        />
-      </div> */}
-      <AccordionTable rows={rows} columns={COLUMNS} />
+        <DashboardWarningTooltip title="Test Warning"></DashboardWarningTooltip>
+        <div style={{          display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "5em",}}>
+          <DashboardDisplayCard
+            cardDisplayTitle="Total impressions"
+            cardDisplayValue="30"
+          />
+          <DashboardDisplayCard
+            cardDisplayTitle="Total clicks"
+            cardDisplayValue="25"
+          />
+          <DashboardDisplayCard
+            cardDisplayTitle="Click through rate"
+            cardDisplayValue="20%"
+          />
+        </div>
+        <AccordionTable rows={rows} columns={COLUMNS} />
+      </div>}
     </>
   );
 }

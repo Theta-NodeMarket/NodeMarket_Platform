@@ -24,9 +24,13 @@ export default function DashboardDateRangePicker() {
             gap: "1em",
           }}
         >
-          <DatePicker label="Start date" />
+          <DatePicker 
+          sx={{ background: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",}}
+          label="Start date" />
           <Typography variant="h4">-</Typography>
-          <DatePicker label="End date" />
+          <DatePicker 
+          sx={{ background: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",}}
+          label="End date" />
         </div>
       </div>
     </LocalizationProvider>

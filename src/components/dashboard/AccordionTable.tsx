@@ -117,7 +117,7 @@ export const AccordionTable = ({
   );
 
   return (
-    <TableContainer component={Paper} sx={{ backgroundColor: "transparent" }}>
+    <TableContainer component={Paper} sx={{ backgroundColor: "transparent", border: "solid 1px rgba(250, 250, 250, .25)", }}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>

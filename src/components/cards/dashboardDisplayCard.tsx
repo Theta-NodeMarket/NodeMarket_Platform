@@ -11,6 +11,8 @@ export default function DashboardDisplayCard(props: cardProps) {
   return (
     <Card
       sx={{
+        background: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
+        border: "solid 1px rgba(250, 250, 250, .25)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
