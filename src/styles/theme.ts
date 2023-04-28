@@ -28,7 +28,8 @@ const theme = createTheme({
       primary: "#fafafa",
     },
     background: {
-      paper: "black",
+      paper: "#181818",
+      default: "#181818",
     },
     info: {
       main: "#4072B4",

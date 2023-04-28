@@ -7,12 +7,16 @@ import "@fontsource/roboto/700.css";
 import type { AppProps } from "next/app";
 import theme from "@/styles/theme";
 import "@/styles/globals.scss";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <CssBaseline />
         <Component {...pageProps} />
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }
