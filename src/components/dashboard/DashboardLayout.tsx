@@ -102,7 +102,7 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }}>
-            <Link href="/">
+            <Link href="/" style={{display: "flex", alignItems: "center"}}>
               <Image src={logo} alt="NodeMarket Logo" />
             </Link>
           </Box>
