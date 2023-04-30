@@ -1,0 +1,15 @@
+[
+  {
+    "id": "fde2427a-09fd-453c-86f5-4497b7468a35",
+    "ad_name": "blender video",
+    "token": "0x378f7d9173201617afbe00b71153219f914f1125aff7aff1ad997f6d6c126fb1",
+    "status": "approved"
+  },
+  {
+    "id": "938fd696-d2d7-4479-bce9-fe39abdf52d0",
+    "ad_name": "space simba",
+    "token": "0x10e724ec693aa8243469a4f4d6b9603963d3e90030b03d32ed73e3e88a377d91",
+    "status": "rejected",
+    "message": "cute kitties are not safe for work"
+  }
+]
