@@ -1,6 +1,5 @@
 import DashboardDisplayCard from "@/components/cards/dashboardDisplayCard";
-import DashboardErrorTooltip from "@/components/tooltips/dashboardErrorTooltip";
-import DashboardWarningTooltip from "@/components/tooltips/dashboardWarningTooltip";
+import DashboardTooltip from "@/components/tooltips/DashboardTooltip";
 import DashboardDateRangePicker from "@/components/inputs/dashboardDateRangePicker";
 import DashboardSelector from "@/components/inputs/dashboardSelector";
 import { AccordionTable } from "@/components/dashboard/AccordionTable";
@@ -8,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 import { Box } from "@mui/material";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
+import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
 
 const COLUMNS = [{ label: "Name" }, { label: "Status" }];
 // {
@@ -25,7 +25,10 @@ const rows = Array.from({ length: 100 }, (_, index) => {
       status: (
         <Box display="flex" alignItems="center">
           Failed&nbsp;
-          <DashboardErrorTooltip title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "></DashboardErrorTooltip>
+          <DashboardTooltip 
+            tooltipType={DashboardTooltipType.Error} 
+            title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "
+          />
         </Box>
       ),
     },
@@ -82,8 +85,14 @@ export function Dashboard() {
               items={names}
             ></DashboardSelector>
           </div>
-          <DashboardErrorTooltip title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "></DashboardErrorTooltip>
-          <DashboardWarningTooltip title="Test Warning"></DashboardWarningTooltip>
+          <DashboardTooltip 
+            tooltipType={DashboardTooltipType.Error} 
+            title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "
+          />
+          <DashboardTooltip 
+            tooltipType={DashboardTooltipType.Warning} 
+            title="Test Warning"
+          />
           <div
             style={{
               display: "flex",
