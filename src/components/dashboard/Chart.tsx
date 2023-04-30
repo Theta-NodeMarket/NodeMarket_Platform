@@ -1,5 +1,5 @@
 import { ApexOptions } from "apexcharts";
-import { Card, Box, Stack, Typography} from "@mui/material";
+import { Card, Grid, Stack, Typography} from "@mui/material";
 import dynamic from "next/dynamic";
 // Next dies when it tries to SSR ApexChart
 // https://github.com/apexcharts/react-apexcharts/issues/240#issuecomment-1077335256
@@ -33,7 +33,7 @@ function getClickThruRate() {
   const clicks = getTotalClicks();
   const impressions = getTotalImpressions();
 
-  return ((clicks / impressions)).toPrecision(2).toString().concat("%");
+  return ((clicks / impressions)*100).toPrecision(2).toString().concat("%");
 }
 
 const defaultSeries: ApexAxisChartSeries = [
@@ -77,42 +77,76 @@ export const ImpressionsAndClicksChart = ({
     xaxis: {
       categories: ['2002-03-01','2002-03-05','2002-03-06','2002-03-07', '2002-03-08', '2002-03-15', '2002-03-16', '2002-03-17', '2002-03-25', '2002-03-30'],
     },
+    responsive: [
+      {
+        breakpoint: 1300,
+        options: {
+          chart: {
+            width: "800px"
+          },
+        }
+      },
+      {
+        // mui md breakpoint
+        breakpoint: 930,
+        options: {
+          chart: {
+            width: "550px"
+          },
+        }
+      },
+      {
+        // mui sm breakpoint
+        breakpoint: 650,
+        options: {
+          chart: {
+            width: "300px"
+          },
+        }
+      }
+    ]
   };
 
   return (
-    <Card 
-      sx={{
-        background: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
-        border: "solid 1px rgba(250, 250, 250, .25)",
-        display: "flex",
-        padding: "24px",
-        alignItems: "center",
-        flexDirection: "column",
-        gap: "12px",
-        width: "100%",
-      }}>
-      <Stack direction={"row"} justifyContent={"center"} spacing={"24px"}>
-        <Stack alignItems={"center"} justifyContent={"center"}>
-          <Typography variant="h4">{getTotalClicks()}</Typography>
-          <Typography variant="body1">Total clicks</Typography>
-        </Stack>
-        <Stack alignItems={"center"} justifyContent={"center"}>
-          <Typography variant="h4">{getTotalImpressions()}</Typography>
-          <Typography variant="body1">Total impressions</Typography>
-        </Stack>
-        <Stack alignItems={"center"} justifyContent={"center"}>
-          <Typography variant="h4">{getClickThruRate()}</Typography>
-          <Typography variant="body1">Click through rate</Typography>
-        </Stack>
-      </Stack>
-
-      <ApexChart
-        options={options}
-        series={series}
-        type="line"
-        width={600}
-        height={350}
-      />
-    </Card>
+    <Grid container gap={".5em"}>
+      <Grid item xs={12}>
+        <Typography variant="h6">Metrics</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Card
+          sx={{
+            background: "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
+            border: "solid 1px rgba(250, 250, 250, .25)",
+            display: "flex",
+            padding: "24px",
+            alignItems: "center",
+            flexDirection: "column",
+            gap: "12px",
+            width: "100%",
+          }}>
+          <Stack direction={{xs:"column", sm: "row"}} justifyContent={"center"} spacing={"24px"}>
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <Typography variant="h4">{getTotalClicks()}</Typography>
+              <Typography variant="body1">Total clicks</Typography>
+            </Stack>
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <Typography variant="h4">{getTotalImpressions()}</Typography>
+              <Typography variant="body1">Total impressions</Typography>
+            </Stack>
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <Typography variant="h4">{getClickThruRate()}</Typography>
+              <Typography variant="body1">Click through rate</Typography>
+            </Stack>
+          </Stack>
+          <ApexChart
+            options={options}
+            series={series}
+            type="line"
+            width={1100}
+            height={350}
+          />
+        </Card>
+      </Grid>
+    </Grid>
   );
 };

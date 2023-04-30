@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ReactNode, useMemo, useState } from "react";
-import { Box, TablePagination, Typography, Stack } from "@mui/material";
+import { Box, TablePagination, Typography, Stack, Grid } from "@mui/material";
 
 interface AccordionTableRowProps {
   row: AccordionTableRow;
@@ -127,35 +127,42 @@ export const AccordionTable = ({
   );
 
   return (
-    <TableContainer component={Paper} sx={{ backgroundColor: "transparent", border: "solid 1px rgba(250, 250, 250, .25)", }}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            {columns.map((column, index) => (
-              <TableCell key={index}>{column.label}</TableCell>
-            ))}
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {visibleRows.map((row, index) => (
-            <AccordionTableRow key={index} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-      {enablePagination ? (
-        <TablePagination
-          component="div"
-          page={page}
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={(_event, page) => setPage(page)}
-          onRowsPerPageChange={(event) =>
-            setRowsPerPage(parseInt(event.target.value))
-          }
-          rowsPerPageOptions={rowsPerPageOptions}
-        />
-      ) : null}
-    </TableContainer>
+    <Grid container gap={".5em"}>
+      <Grid item xs={12}>
+          <Typography variant="h6">Advertisements</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <TableContainer component={Paper} sx={{ backgroundColor: "transparent", border: "solid 1px rgba(250, 250, 250, .25)", }}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column, index) => (
+                  <TableCell key={index}>{column.label}</TableCell>
+                ))}
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {visibleRows.map((row, index) => (
+                <AccordionTableRow key={index} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+          {enablePagination ? (
+            <TablePagination
+              component="div"
+              page={page}
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              onPageChange={(_event, page) => setPage(page)}
+              onRowsPerPageChange={(event) =>
+                setRowsPerPage(parseInt(event.target.value))
+              }
+              rowsPerPageOptions={rowsPerPageOptions}
+            />
+          ) : null}
+        </TableContainer>
+      </Grid>
+    </Grid>
   );
 };
