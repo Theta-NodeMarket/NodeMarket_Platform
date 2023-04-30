@@ -16,8 +16,8 @@ export default function DashboardDisplayCard(props: cardProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        minWidth: "15em",
-        minHeight: "10em",
+        minWidth: "10em",
+        minHeight: "2em",
         whiteSpace: "nowrap",
       }}
     >

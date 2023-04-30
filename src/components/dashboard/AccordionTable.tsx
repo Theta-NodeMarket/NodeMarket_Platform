@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ReactNode, useMemo, useState } from "react";
-import { Box, TablePagination, Typography } from "@mui/material";
+import { Box, TablePagination, Typography, Stack } from "@mui/material";
 
 interface AccordionTableRowProps {
   row: AccordionTableRow;
@@ -53,15 +53,25 @@ function AccordionTableRow({ row }: AccordionTableRowProps) {
   );
 }
 
+function GetExtraDataKeyColor(key: string)
+{
+  return key.includes("clicks") ? "#5CC542" : "#FFA500"; 
+}
+
 export const DisplayExtraData = ({
   row: { data, extraData },
 }: AccordionTableRowProps) => {
   return (
     <Box sx={{ p: 2, display: "flex", gap: 2 }}>
       {Object.entries(extraData!).map(([key, value], index) => (
-        <Typography key={index}>
-          {key}: {value}
-        </Typography>
+        <Stack direction={"row"} key={index}>
+          <Typography style={{color: GetExtraDataKeyColor(key.toLowerCase())}}>
+            {key}
+          </Typography>
+          <Typography>
+            : {value}
+          </Typography>
+        </Stack>
       ))}
     </Box>
   );

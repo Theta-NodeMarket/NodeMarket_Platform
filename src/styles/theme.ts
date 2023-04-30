@@ -37,39 +37,51 @@ const theme = createTheme({
   typography: {
     h1: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     h2: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     h3: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     h4: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     h5: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     h6: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     subtitle1: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     subtitle2: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     body1: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     body2: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     caption: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
     overline: {
       color: "#FAFAFA",
+      fontFamily: "Roboto"
     },
   },
 });
