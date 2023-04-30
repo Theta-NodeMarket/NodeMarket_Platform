@@ -1,9 +1,8 @@
-import DashboardDisplayCard from "@/components/cards/dashboardDisplayCard";
 import DashboardTooltip from "@/components/tooltips/DashboardTooltip";
 import { AccordionTable } from "@/components/dashboard/AccordionTable";
 import Link from "next/link";
 import React from "react";
-import { Box, Stack, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
 import { FilterParams } from "@/components/dashboard/FilterParams";
@@ -57,22 +56,24 @@ export function Dashboard() {
   return (
     <>
       {
-        <Grid container alignItems={"center"} gap={"24px"}>
-          <Grid item xs={12}>
-            <FilterParams selectorTitle="Advertisement Filter" selectorItems={names}/>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={"24px"}>
-              <Grid item xs={12}>
-                <ImpressionsAndClicksChart />
-              </Grid>
-              <Grid item xs={12}>
-                <AccordionTable rows={rows} columns={COLUMNS} />
-              </Grid>
+        <Container fixed>
+          <Grid container alignItems={"center"} gap={"24px"}>
+            <Grid item xs={12}>
+              <FilterParams selectorTitle="Advertisement Filter" selectorItems={names}/>
             </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={"24px"}>
+                <Grid item xs={12}>
+                  <ImpressionsAndClicksChart />
+                </Grid>
+                <Grid item xs={12}>
+                  <AccordionTable rows={rows} columns={COLUMNS} />
+                </Grid>
+              </Grid>
 
+            </Grid>
           </Grid>
-        </Grid>
+        </Container>
       }
     </>
   );
