@@ -10,8 +10,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { ReactNode, useMemo, useState } from "react";
-import { Box, TablePagination, Typography, Stack, Grid } from "@mui/material";
+import { Box, TablePagination, Typography, Stack, Grid, Button } from "@mui/material";
 
 interface AccordionTableRowProps {
   row: AccordionTableRow;
@@ -129,7 +130,18 @@ export const AccordionTable = ({
   return (
     <Grid container gap={".5em"}>
       <Grid item xs={12}>
-          <Typography variant="h6">Advertisements</Typography>
+        <Grid container direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
+          <Grid item xs={6} md={8}>
+            <Typography variant="h6">Advertisements</Typography>
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <Button startIcon={<AddRoundedIcon/>}
+              fullWidth
+              variant="contained">
+              Create new advertisement
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item xs={12}>
         <TableContainer component={Paper} sx={{ backgroundColor: "transparent", border: "solid 1px rgba(250, 250, 250, .25)", }}>

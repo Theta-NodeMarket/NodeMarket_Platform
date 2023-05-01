@@ -84,6 +84,20 @@ const theme = createTheme({
       fontFamily: "Roboto"
     },
   },
+  components: {
+    // Name of the component
+    MuiButton: {
+      styleOverrides: {
+        // Name of the slot
+        root: ({ ownerState }) => ({
+          ...(ownerState.variant === 'contained' &&
+            ownerState.color === 'primary' && {
+              color: '#181818',
+          }),
+        }),
+      },
+    }
+  },
 });
 
 export default theme;
