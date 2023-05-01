@@ -115,7 +115,7 @@ export function Documentation()
                             &emsp;&emsp;&lt;/div&gt;<br/>
                             &emsp;&emsp;&lt;!--Add this script tag to retrieve advertisements and get credit for promoting them. --&gt;<br/>
                             &emsp;&emsp;&lt;script async src=&quot;http://localhost:3000/scripts/promoter?id=&lt;&lt;yourId&gt;&gt;&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;<br/>
-                            &emsp;&emsp;&lt;/body&gt;<br/>
+                            &emsp;&lt;/body&gt;<br/>
                             &lt;/html&gt;
                         </code>
                     </pre>

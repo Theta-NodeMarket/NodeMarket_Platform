@@ -6,6 +6,7 @@ const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
+// Gets all of the advertisements that a promoter has served and earned credit for.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

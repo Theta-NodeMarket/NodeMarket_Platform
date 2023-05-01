@@ -14,6 +14,7 @@ export default async function handler(
   const { authId } = req.query;
   if (!authId) return res.status(400).end();
 
+  // Gets all of the statistic data for advertisements that a promoter has served and earned credit for.
   try {
     const { data: ads } = await supabase
       .from("promotions")

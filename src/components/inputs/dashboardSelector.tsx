@@ -26,7 +26,7 @@ export default function DashboardSelector(props: selectorProps)
                 <Typography variant="h6">{props.title}</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Select 
+                <Select
                     value={advertismentName} 
                     onChange={handleChange}
                     renderValue={(selected) => selected.join(', ')} 
