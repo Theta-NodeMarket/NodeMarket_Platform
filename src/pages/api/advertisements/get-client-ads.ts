@@ -6,6 +6,7 @@ const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
+// This end point is responsible for serving ads on a requesting website.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

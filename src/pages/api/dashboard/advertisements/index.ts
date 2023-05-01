@@ -6,6 +6,7 @@ const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
+// Gets all of the advertisements owned by the requesting user.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

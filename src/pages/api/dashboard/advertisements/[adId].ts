@@ -6,6 +6,7 @@ const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
+// Gets an advertisement's details by id.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

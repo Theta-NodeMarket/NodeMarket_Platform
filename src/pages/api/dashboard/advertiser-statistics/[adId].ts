@@ -6,6 +6,7 @@ const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
+// Gets all of the statistics data associated with one advertisement by ad id.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

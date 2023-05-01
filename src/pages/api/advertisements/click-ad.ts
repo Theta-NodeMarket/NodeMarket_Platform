@@ -6,6 +6,7 @@ const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
+// This is the end point responsible for upserting clicks for an advertisement.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
