@@ -11,15 +11,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   if (req.method !== "GET") return res.status(405).end();
 
-  const { numberOfAds, authId } = req.query;
-  if (!numberOfAds || !authId) return res.status(400).end();
+  const { n, siteId } = req.query;
+  if (!n || !siteId) return res.status(400).end();
 
   try {
-    const { data } = await supabase.rpc("get_random_advertisements", {
-      n: numberOfAds,
-    });
+    const { data } = await supabase.rpc("get_random_advertisements", { n });
 
     const ads = [...data].map((ad) => ({
       ...ad,
@@ -36,7 +36,7 @@ export default async function handler(
       ads.map(async (ad) => {
         await supabase.rpc("attempt_upsert_impressions", {
           adid: ad.id,
-          authid: authId,
+          authid: siteId,
           datekey: dateKey,
         });
       })

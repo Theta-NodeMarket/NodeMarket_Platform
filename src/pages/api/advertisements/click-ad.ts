@@ -11,15 +11,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   if (req.method !== "POST") return res.status(405).end();
-  const { adId, authId } = req.query;
-  if (!adId || !authId) return res.status(400).end();
+  const { adId, siteId } = req.query;
+  if (!adId || !siteId) return res.status(400).end();
   const dateKey = new Date().toISOString().split("T")[0];
 
   try {
     await supabase.rpc("attempt_upsert_clicks", {
       adid: adId,
-      authid: authId,
+      authid: siteId,
       datekey: dateKey,
     });
     return res.status(200).end();
