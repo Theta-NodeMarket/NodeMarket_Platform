@@ -2,7 +2,7 @@ const BASE_URL = "http://localhost:3000";
 const GET_ADS_URL = "/api/advertisements/get-client-ads";
 const AD_CLICK_URL = "/api/advertisements/click-ad";
 const PROMOTER_ID = "<<CHANGE THIS ID>>";
-const THETA_CLASS = "theta-ad";
+const THETA_AD_SELECTOR = ".theta-ad";
 const IMAGE_PARAMS =
   "style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
 const VIDEO_PARAMS =
@@ -63,7 +63,7 @@ function injectAdIntoSlot(ad, slotElement) {
 }
 
 async function initNodeMarket() {
-  const adSlots = document.querySelectorAll(".theta-ad");
+  const adSlots = document.querySelectorAll(THETA_AD_SELECTOR);
   const adCount = adSlots.length;
 
   const ads = await requestAds(adCount);
@@ -72,7 +72,7 @@ async function initNodeMarket() {
     injectAdIntoSlot(ads[i], adSlots[i]);
   }
 
-  listenForNewElementAdded(`.${THETA_CLASS}`, async (slot) => {
+  listenForNewElementAdded(THETA_AD_SELECTOR, async (slot) => {
     const [ad] = await requestAds();
     injectAdIntoSlot(ad, slot);
   });
