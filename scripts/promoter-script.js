@@ -1,64 +1,81 @@
-// We can refactor below.
-// This just demonstrates that it is possible. In the future we can iterate through different ads instead of only using the first ad object.
-async function GetAdvertisements() {
-  const thetaAds = document.getElementsByClassName("theta-ad");
-  const numberOfthetaAds = thetaAds.length;
+const BASE_URL = "http://localhost:3000";
+const GET_ADS_URL = "/api/advertisements/get-client-ads";
+const AD_CLICK_URL = "/api/advertisements/click-ad";
+const PROMOTER_ID = "<<CHANGE THIS ID>>";
+const THETA_CLASS = "theta-ad";
+const IMAGE_PARAMS =
+  "style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
+const VIDEO_PARAMS =
+  "playInline autoplay muted loop style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
 
-  let ResponseArray = [];
-  const response = await fetch(
-    `http://localhost:3000/advertisements/get-ad-data?id=<<CHANGE THIS ID>>&n=${numberOfthetaAds}`,
-    {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-      },
+/**
+ * @param {string} selector CSS Selector to search for elements
+ * @param {Function} callback Runs each time a matching element is found
+ * @param {Object} [config={attributes: true, childList: true, subtree: true}] Configuration object to be passed into observer
+ */
+function listenForNewElementAdded(
+  selector,
+  callback,
+  config = { attributes: true, childList: true, subtree: true }
+) {
+  const observerCallback = (mutationList, _observer) => {
+    for (const mutation of mutationList) {
+      for (const node of mutation.addedNodes) {
+        if (!node || !node.matches(selector)) break;
+        callback(node);
+      }
     }
-  );
-
-  const AdvertisementList = await response.json();
-  const AdvertisementListLength = Object.keys(AdvertisementList).length;
-
-  for (let i = 0; i < AdvertisementListLength; i++) {
-    ResponseArray.push({
-      adId: AdvertisementList[i].adId,
-      token: AdvertisementList[i].token,
-      mediaType: AdvertisementList[i].mediaType,
-      redirectLink: AdvertisementList[i].redirectLink,
-      src: AdvertisementList[i].src,
-      mediaTypeParams: AdvertisementList[i].mediaTypeParams,
-    });
-  }
-
-  // Add the advertisement after every element with the theta-ad class. This lets the user customize their ad display experience.
-  const body = document.getElementsByClassName("theta-ad");
-  for (let i = 0; i < body.length; i++) {
-    // Put random ad, could be better but it works for now.
-    body[i].insertAdjacentHTML(
-      "beforeend",
-      `<${ResponseArray[i].mediaType} src=${ResponseArray[i].src} ${ResponseArray[i].mediaTypeParams} class=${ResponseArray[i].token} />`
-    );
-
-    // Look for the ad that was just added. Add redirect on click event listener
-    let ads = document.getElementsByClassName(ResponseArray[i].token);
-    ads[0].addEventListener("click", () => {
-      upsertClicks(ResponseArray[i].adId);
-      window.location.href = ResponseArray[i].redirectLink;
-    });
-  }
+  };
+  const observer = new MutationObserver(observerCallback);
+  observer.observe(document, config);
+  return observer.disconnect;
 }
 
-async function upsertClicks(adId) {
-  const { response, error } = await fetch(
-    `http://localhost:3000/advertisements/upsert-clicks?id=<<CHANGE THIS ID>>&adId=${adId}`,
-    {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-      },
-    }
-  );
-
-  if (error) console.log(error);
+async function requestAds(n = 1) {
+  const url = `${BASE_URL}${GET_ADS_URL}?siteId=${PROMOTER_ID}&n=${n}`;
+  const ads = await (await fetch(url)).json();
+  return ads;
 }
 
-GetAdvertisements();
+async function handleClickAd(ad) {
+  const { id: adId, redirect_link } = ad;
+  const url = `${BASE_URL}${AD_CLICK_URL}?siteId=${PROMOTER_ID}&adId=${adId}`;
+  fetch(url, { method: "POST" });
+  window.location.href = redirect_link;
+}
+
+function injectAdIntoSlot(ad, slotElement) {
+  const { ad_name, media_type, src } = ad;
+  const params =
+    media_type === "image"
+      ? IMAGE_PARAMS
+      : media_type === "video"
+      ? VIDEO_PARAMS
+      : undefined;
+
+  const thetaAdHTML = `<${media_type} src=${src} ${params} alt=${ad_name} />`;
+
+  slotElement.innerHTML = thetaAdHTML;
+
+  slotElement.firstElementChild.addEventListener("click", (_event) =>
+    handleClickAd(ad)
+  );
+}
+
+async function initNodeMarket() {
+  const adSlots = document.querySelectorAll(".theta-ad");
+  const adCount = adSlots.length;
+
+  const ads = await requestAds(adCount);
+
+  for (let i = 0; i < adCount; i++) {
+    injectAdIntoSlot(ads[i], adSlots[i]);
+  }
+
+  listenForNewElementAdded(`.${THETA_CLASS}`, async (slot) => {
+    const [ad] = await requestAds();
+    injectAdIntoSlot(ad, slot);
+  });
+}
+
+initNodeMarket();
