@@ -1,7 +1,7 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "<<CHANGE BASE URL>>";
+const PROMOTER_ID = "<<CHANGE PROMOTER ID>>";
 const GET_ADS_URL = "/api/advertisements/get-client-ads";
 const AD_CLICK_URL = "/api/advertisements/click-ad";
-const PROMOTER_ID = "<<CHANGE THIS ID>>";
 const THETA_AD_SELECTOR = ".theta-ad";
 const IMAGE_PARAMS =
   "style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
