@@ -91,6 +91,7 @@ export interface AccordionTableRow {
 }
 
 export interface AccordionTableProps {
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   columns: AccordionTableColumn[];
   rows: AccordionTableRow[];
   paginationOptions?: {
@@ -108,13 +109,14 @@ const initialRowsPerPageOptions = Array.from(
 const initialPageRowCount = initialRowsPerPageOptions[1];
 
 export const AccordionTable = ({
+  setModalOpen,
   columns = [],
   rows = [],
   paginationOptions: { enablePagination, pageRowCount, rowsPerPageOptions } = {
     enablePagination: rows.length > initialPageRowCount,
     pageRowCount: initialPageRowCount,
     rowsPerPageOptions: initialRowsPerPageOptions,
-  },
+  }
 }: AccordionTableProps) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pageRowCount);
@@ -137,7 +139,7 @@ export const AccordionTable = ({
           <Grid item xs={6} md={4}>
             <Button startIcon={<AddRoundedIcon/>}
               fullWidth
-              variant="contained">
+              variant="contained" onClick={()=>{setModalOpen(true)}}>
               Create new advertisement
             </Button>
           </Grid>

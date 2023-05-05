@@ -6,6 +6,12 @@ import { Box, Container, Grid } from "@mui/material";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
 import { FilterParams } from "@/components/dashboard/FilterParams";
+import Modal from "@/components/modals/Modal";
+import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm";
+import { CreateAdViewModel } from "@/lib/models/CreateAdViewModel";
+
+const CreateAdVM: CreateAdViewModel  = new CreateAdViewModel();
+export const CreateAdModalContext = React.createContext<CreateAdViewModel>(CreateAdVM);
 
 const COLUMNS = [{ label: "Name" }, { label: "Status" }];
 // {
@@ -40,6 +46,8 @@ const rows = Array.from({ length: 100 }, (_, index) => {
 });
 
 export function Dashboard() {
+  const [opened, setOpened] = React.useState(false);
+
   const names = [
     "Oliver Hansen",
     "Van Henry",
@@ -67,11 +75,18 @@ export function Dashboard() {
                   <ImpressionsAndClicksChart />
                 </Grid>
                 <Grid item xs={12}>
-                  <AccordionTable rows={rows} columns={COLUMNS} />
+                  <AccordionTable setModalOpen={setOpened} rows={rows} columns={COLUMNS} />
                 </Grid>
               </Grid>
-
             </Grid>
+
+            <CreateAdModalContext.Provider value={CreateAdVM}>
+              <Modal modalTitle="Create Advertisement" 
+                     modalSubmitText="Submit" 
+                     modalOpen={opened}
+                     setModalOpen={setOpened}
+                     modalContent={<CreateAdvertisementForm/>} />
+            </CreateAdModalContext.Provider>
           </Grid>
         </Container>
       }

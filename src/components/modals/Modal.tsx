@@ -4,23 +4,25 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { CreateAdModalContext } from "../../pages/dashboard/dashboard";
 
-interface modalProps {
+interface IModalProps {
   modalTitle: string;
   modalSubmitText: string;
   modalContent: React.ReactNode;
-  modalOpened: boolean;
+  modalOpen: boolean;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Modal(props: modalProps) {
+export default function Modal(props: IModalProps) {
   return (
     <div>
-      <Dialog open={props.modalOpened}>
-        <DialogTitle>Create Advertisement</DialogTitle>
-        <DialogContent></DialogContent>
+      <Dialog open={props.modalOpen}>
+        <DialogTitle>{props.modalTitle}</DialogTitle>
+        <DialogContent>{props.modalContent}</DialogContent>
         <DialogActions>
-          <Button>Cancel</Button>
-          <Button>Submit</Button>
+          <Button onClick={()=>{props.setModalOpen(false)}}>Cancel</Button>
+          <Button>{props.modalSubmitText}</Button>
         </DialogActions>
       </Dialog>
     </div>
@@ -29,16 +31,3 @@ export default function Modal(props: modalProps) {
 
 /* On cancel close modal and reset form */
 /* On submit modal and submit form using vm logic */
-
-// Use context to pass this idea of a VM down to modal AND form
-class SomeVM {
-  // handle state in here
-  //const [adName, setAdName] = useState('');
-  adname = "";
-  file = "";
-  token = "";
-
-  handleSubmit() {
-    // do something
-  }
-}
