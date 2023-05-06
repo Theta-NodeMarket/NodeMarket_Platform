@@ -38,16 +38,18 @@ export class CreateAdViewModel {
     }
   }
 
-  clearForm() {
+  clearForm = () => {
     this.adName = "";
     this.redirectLink = "";
     this.file = undefined;
     this.formNotValid = false;
-  }
+    this.token = "";
+  };
 
-  async handleSubmit() {
+  handleSubmit = async () => {
     if (!this.adName || !this.redirectLink || !this.file) {
       this.formNotValid = true;
+      console.log(this);
       return;
     }
 
@@ -77,5 +79,6 @@ export class CreateAdViewModel {
     // Clear form
     // Close modal
     // Maybe pop up success message
-  }
+    this.clearForm();
+  };
 }
