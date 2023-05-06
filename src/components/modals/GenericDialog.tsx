@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { CreateAdModalContext } from "../../pages/dashboard/dashboard";
+import { ModalContext } from "../../pages/dashboard/dashboard";
 
 interface IModalProps {
   modalTitle: string;
@@ -14,14 +14,22 @@ interface IModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Modal(props: IModalProps) {
+export default function GenericDialog(props: IModalProps) {
+  const model = React.useContext(ModalContext);
   return (
     <div>
       <Dialog open={props.modalOpen}>
         <DialogTitle>{props.modalTitle}</DialogTitle>
         <DialogContent>{props.modalContent}</DialogContent>
         <DialogActions>
-          <Button onClick={()=>{props.setModalOpen(false)}}>Cancel</Button>
+          <Button
+            onClick={() => {
+              model.clearForm();
+              props.setModalOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
           <Button>{props.modalSubmitText}</Button>
         </DialogActions>
       </Dialog>
