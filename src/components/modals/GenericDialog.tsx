@@ -30,7 +30,7 @@ export default function GenericDialog(props: IModalProps) {
           >
             Cancel
           </Button>
-          <Button>{props.modalSubmitText}</Button>
+          <Button onClick={model.handleSubmit}>{props.modalSubmitText}</Button>
         </DialogActions>
       </Dialog>
     </div>
