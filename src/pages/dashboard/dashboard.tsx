@@ -8,10 +8,20 @@ import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
 import { FilterParams } from "@/components/dashboard/FilterParams";
 import Modal from "@/components/modals/GenericDialog";
 import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm";
-import { CreateAdViewModel } from "@/lib/models/CreateAdViewModel";
+import { useTheta } from "@/hooks/useTheta";
 
-const CreateAdVM: CreateAdViewModel = new CreateAdViewModel();
-export const ModalContext = React.createContext<CreateAdViewModel>(CreateAdVM);
+const { sendFileToTheta } = useTheta();
+
+interface formParams {
+  adName: string;
+  setAdName: (adName: string) => void;
+  redirectLink: string;
+  setRedirectLink: (redirectLink: string) => void;
+  file?: File;
+  setFile: (file?: File) => void;
+}
+
+export const ModalContext = React.createContext<formParams>(undefined!);
 
 const COLUMNS = [{ label: "Name" }, { label: "Status" }];
 // {
@@ -47,6 +57,61 @@ const rows = Array.from({ length: 100 }, (_, index) => {
 
 export function Dashboard() {
   const [opened, setOpened] = React.useState(false);
+  const [adName, setAdName] = React.useState("");
+  const [redirectLink, setRedirectLink] = React.useState("");
+  const [file, setFile] = React.useState<File>();
+  const [token, setToken] = React.useState("");
+
+  const clearForm = () => {
+    setAdName("");
+    setRedirectLink("");
+    setFile(undefined);
+    setToken("");
+  };
+
+  const handleSubmit = async () => {
+    if (!adName || !redirectLink || !file) {
+      console.log("error");
+      return;
+    }
+
+    // upload to theta
+    var response = await sendFileToTheta(file);
+
+    // if failure:
+    // keep modal open
+    // display error text
+    // return
+    if (!response.ok) return; // if theta says no.
+
+    // if success:
+    // token = blah blah blah
+    setToken((await response.json()).key as string);
+    console.log(token);
+
+    // Upload to our db
+    // if failure:
+
+    // setToken = "";
+    // keep modal open;
+    // display error text;
+    // return
+
+    // if success:
+    // Clear form
+    // Close modal
+    // Maybe pop up success message
+    clearForm();
+  };
+
+  const value = {
+    adName,
+    setAdName,
+    redirectLink,
+    setRedirectLink,
+    file,
+    setFile,
+  };
 
   const names = [
     "Oliver Hansen",
@@ -87,12 +152,14 @@ export function Dashboard() {
               </Grid>
             </Grid>
 
-            <ModalContext.Provider value={CreateAdVM}>
+            <ModalContext.Provider value={value}>
               <Modal
                 modalTitle="Create Advertisement"
                 modalSubmitText="Submit"
                 modalOpen={opened}
                 setModalOpen={setOpened}
+                onCancel={clearForm}
+                onSubmit={handleSubmit}
                 modalContent={<CreateAdvertisementForm />}
               />
             </ModalContext.Provider>

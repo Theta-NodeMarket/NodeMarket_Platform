@@ -8,24 +8,19 @@ import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
 export default function CreateAdvertisementForm() {
-  const model = React.useContext(ModalContext);
-  const [adName, setAdName] = React.useState("");
-  const [redirectLink, setRedirectLink] = React.useState("");
-  const [file, setFile] = React.useState<File>();
+  const { adName, setAdName, redirectLink, setRedirectLink, file, setFile } =
+    React.useContext(ModalContext);
 
   const handleAdNameUpdate = (value: string) => {
     setAdName(value);
-    model.setAdName(adName);
   };
 
   const handleRedirectLinkUpdate = (value: string) => {
     setRedirectLink(value);
-    model.setRedirectLink(redirectLink);
   };
 
   const handleFileUpdate = (value?: File) => {
     setFile(value);
-    model.setFile(file);
   };
 
   return (

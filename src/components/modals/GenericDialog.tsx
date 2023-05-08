@@ -4,7 +4,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { ModalContext } from "../../pages/dashboard/dashboard";
 
 interface IModalProps {
   modalTitle: string;
@@ -12,10 +11,11 @@ interface IModalProps {
   modalContent: React.ReactNode;
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: () => void;
+  onCancel?: () => void;
 }
 
 export default function GenericDialog(props: IModalProps) {
-  const model = React.useContext(ModalContext);
   return (
     <div>
       <Dialog open={props.modalOpen}>
@@ -24,13 +24,13 @@ export default function GenericDialog(props: IModalProps) {
         <DialogActions>
           <Button
             onClick={() => {
-              model.clearForm();
+              props.onCancel?.();
               props.setModalOpen(false);
             }}
           >
             Cancel
           </Button>
-          <Button onClick={model.handleSubmit}>{props.modalSubmitText}</Button>
+          <Button onClick={props.onSubmit}>{props.modalSubmitText}</Button>
         </DialogActions>
       </Dialog>
     </div>
