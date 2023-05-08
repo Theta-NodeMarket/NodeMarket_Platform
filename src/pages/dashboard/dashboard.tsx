@@ -10,6 +10,13 @@ import Modal from "@/components/modals/GenericDialog";
 import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm";
 import { useTheta } from "@/hooks/useTheta";
 
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient<any>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
+);
+
 const { sendFileToTheta } = useTheta();
 
 interface formParams {
@@ -83,19 +90,36 @@ export function Dashboard() {
     // display error text
     // return
     if (!response.ok) return; // if theta says no.
-
+    const thetaToken = (await response.json()).key as string;
     // if success:
-    // token = blah blah blah
-    setToken((await response.json()).key as string);
-    console.log(token);
+    // setToken = "";
+
+    // sometimes we dont get token back in time.
+    setToken(thetaToken);
+
+    const { data } = await supabase.auth.getUser();
+    const adData = {
+      authId: data.user?.id,
+      token,
+      adName,
+      redirectLink,
+      mediaType: file.type,
+    };
+
+    // currently getting 400 error.
 
     // Upload to our db
+    var uploadToDbResp = await fetch("/api/dashboard/advertisements/", {
+      method: "POST",
+      body: JSON.stringify(adData),
+    });
     // if failure:
-
-    // setToken = "";
     // keep modal open;
     // display error text;
     // return
+    if (uploadToDbResp.status !== 200) {
+      return;
+    }
 
     // if success:
     // Clear form
