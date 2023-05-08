@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { adTable, campaignTable } from "@/utils/consts";
 
 const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -11,14 +12,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    const { authId } = req.query;
-    if (!authId) return res.status(400).end();
+  const { authId } = req.query;
+  if (!authId) return res.status(400).end();
 
+  if (req.method === "GET") {
+    // get all a user's advertisements
     try {
       const { data } = await supabase
-        .from("campaigns")
-        .select(`advertisements (*)`)
+        .from(campaignTable)
+        .select(`${adTable} (*)`)
         .eq("auth_id", authId);
 
       const ads = data?.map((data) => data?.advertisements);
@@ -28,6 +30,7 @@ export default async function handler(
       return res.status(500).json(err);
     }
   } else if (req.method === "POST") {
+    // create a new advertisement
     const { authId: auth_id } = req.query;
     const {
       token,
@@ -40,7 +43,7 @@ export default async function handler(
 
     try {
       const { data } = await supabase
-        .from("advertisements")
+        .from(adTable)
         .insert({
           token,
           redirect_link,
@@ -54,7 +57,7 @@ export default async function handler(
       const advertisement_id = ad.id;
 
       // create a campaign using ad.id as advertisement_id and auth_id
-      await supabase.from("campaigns").insert({
+      await supabase.from(campaignTable).insert({
         advertisement_id,
         auth_id,
       });
