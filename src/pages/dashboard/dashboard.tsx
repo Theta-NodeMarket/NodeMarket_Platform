@@ -12,6 +12,7 @@ import { FilterParams } from "@/components/dashboard/FilterParams";
 import Modal from "@/components/modals/GenericDialog";
 import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm";
 import { useTheta } from "@/hooks/useTheta";
+import Router from "next/router";
 
 import {
   Advertisement,
@@ -29,6 +30,11 @@ interface FormParams {
   setRedirectLink: (redirectLink: string) => void;
   file?: File;
   setFile: (file?: File) => void;
+  adNameError: string;
+  redirectLinkError: string;
+  fileError: string;
+  validateAdNameInput: ()=>Boolean;
+  validateRedirectLinkInput: ()=>Boolean;
 }
 
 export const ModalContext = React.createContext<FormParams>(undefined!);
@@ -72,27 +78,86 @@ export function Dashboard() {
   const { stats } = useDashboardStats();
   // const series = useMemo(() => , [stats]);
 
-  const clearForm = () => {
+  // errors
+  const [submitError, setSubmitError] = React.useState("");
+  const [adNameError, setAdNameError] = React.useState("");
+  const [redirectLinkError, setRedirectLinkError] = React.useState("");
+  const [fileError, setFileError] = React.useState("");
+
+  const ResetForm = () => {
     setAdName("");
     setRedirectLink("");
     setFile(undefined);
     setToken("");
+    setSubmitError("");
+    setAdNameError("");
+    setRedirectLinkError("");
+    setFileError("");
   };
 
-  const handleSubmit = async () => {
-    if (!adName || !redirectLink || !file) {
-      console.log("error");
-      return;
+  const validateAdNameInput = () => {
+    let isValid = true;
+    if (!adName) {
+      setAdNameError("An advertisment name is required.");
+      isValid = false;
+    }
+    else
+    {
+      setAdNameError("");
     }
 
+    return isValid;
+  }
+
+  const validateRedirectLinkInput = () => {
+    let isValid = true;
+    if (!redirectLink) {
+      setRedirectLinkError("A redirect link is required.");
+      isValid = false;
+    }
+    else
+    {
+      setRedirectLinkError("");
+    }
+
+    return isValid;
+  }
+
+  const validateFileInput = () => {
+    let isValid = true;
+    if (!file) {
+      setFileError("An image or video file is required.");
+      isValid = false;
+    }
+    else
+    {
+      setFileError("");
+    }
+
+    return isValid;
+  }
+
+
+  const handleSubmit = async () => {
+
+    let isValid = true;
+    isValid = validateAdNameInput();
+    isValid = validateRedirectLinkInput();
+    isValid = validateFileInput();
+    if(!isValid) return;
+
     // upload to theta
-    var response = await sendFileToTheta(file);
+    var response = await sendFileToTheta(file!);
 
     // if failure:
     // keep modal open
     // display error text
     // return
-    if (!response.ok) return; // if theta says no.
+    if (typeof response === "string") 
+    {
+      setSubmitError(response);
+      return; // if theta says no.
+    }
     const thetaToken = (await response.json()).key as string;
     // if success:
     // setToken = "";
@@ -103,7 +168,7 @@ export function Dashboard() {
       token: thetaToken,
       adName,
       redirectLink,
-      mediaType: file.type,
+      mediaType: file?.type,
     };
 
     // currently getting 400 error.
@@ -129,8 +194,9 @@ export function Dashboard() {
     // Clear form
     // Close modal
     // Maybe pop up success message
-    clearForm();
     setOpened(false);
+    ResetForm();
+    Router.reload();
   };
 
   const value = {
@@ -140,6 +206,11 @@ export function Dashboard() {
     setRedirectLink,
     file,
     setFile,
+    adNameError,
+    redirectLinkError,
+    fileError,
+    validateAdNameInput,
+    validateRedirectLinkInput,
   };
 
   const names = [
@@ -187,9 +258,9 @@ export function Dashboard() {
                 modalSubmitText="Submit"
                 modalOpen={opened}
                 setModalOpen={setOpened}
-                onCancel={clearForm}
+                onCancel={ResetForm}
                 onSubmit={handleSubmit}
-                modalContent={<CreateAdvertisementForm />}
+                modalContent={<CreateAdvertisementForm submissionErrorMessage={submitError}/>}
               />
             </ModalContext.Provider>
           </Grid>
