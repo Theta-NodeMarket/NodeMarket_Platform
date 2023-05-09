@@ -93,14 +93,11 @@ export function Dashboard() {
     const thetaToken = (await response.json()).key as string;
     // if success:
     // setToken = "";
-
-    // sometimes we dont get token back in time.
     setToken(thetaToken);
 
     const { data } = await supabase.auth.getUser();
     const adData = {
-      authId: data.user?.id,
-      token,
+      token: thetaToken,
       adName,
       redirectLink,
       mediaType: file.type,
@@ -109,10 +106,17 @@ export function Dashboard() {
     // currently getting 400 error.
 
     // Upload to our db
-    var uploadToDbResp = await fetch("/api/dashboard/advertisements/", {
-      method: "POST",
-      body: JSON.stringify(adData),
-    });
+    var uploadToDbResp = await fetch(
+      `/api/dashboard/advertisements?authId=${data.user?.id}`,
+      {
+        method: "POST",
+        body: JSON.stringify(adData),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        }),
+      }
+    );
     // if failure:
     // keep modal open;
     // display error text;
@@ -126,6 +130,7 @@ export function Dashboard() {
     // Close modal
     // Maybe pop up success message
     clearForm();
+    setOpened(false);
   };
 
   const value = {
