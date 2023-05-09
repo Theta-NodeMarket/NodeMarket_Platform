@@ -1,3 +1,5 @@
+const thetaUrl = "https://api.thetaedgestore.com/api/v2/data";
+
 async function getAuthToken() {
   if (!window.ethereum) throw new Error("No Web3 Provider!");
   const accounts = await window.ethereum.request<any>({
@@ -32,7 +34,7 @@ const sendFileToTheta = async (file: File) => {
   const form = new FormData();
   form.append("directory", file, `./${file.name}`);
 
-  const res = await fetch("https://api.thetaedgestore.com/api/v2/data", {
+  const res = await fetch(thetaUrl, {
     method: "POST",
     body: form,
     headers,

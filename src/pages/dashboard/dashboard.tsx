@@ -1,7 +1,10 @@
 import DashboardTooltip from "@/components/tooltips/DashboardTooltip";
-import { AccordionTable } from "@/components/dashboard/AccordionTable";
+import {
+  AccordionTable,
+  AccordionTableRow,
+} from "@/components/dashboard/AccordionTable";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
@@ -10,16 +13,16 @@ import Modal from "@/components/modals/GenericDialog";
 import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm";
 import { useTheta } from "@/hooks/useTheta";
 
-import { createClient } from "@supabase/supabase-js";
+import {
+  Advertisement,
+  useDashboardAds,
+  useDashboardStats,
+} from "./useDashboard";
+import { supabase } from "@/utils/supabase";
 
-const supabase = createClient<any>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
-);
+const createAdUrl = "/api/dashboard/campaigns";
 
-const { sendFileToTheta } = useTheta();
-
-interface formParams {
+interface FormParams {
   adName: string;
   setAdName: (adName: string) => void;
   redirectLink: string;
@@ -28,39 +31,35 @@ interface formParams {
   setFile: (file?: File) => void;
 }
 
-export const ModalContext = React.createContext<formParams>(undefined!);
+export const ModalContext = React.createContext<FormParams>(undefined!);
 
 const COLUMNS = [{ label: "Name" }, { label: "Status" }];
-// {
-//   label: (
-//     <Button variant="contained" startIcon={<AddIcon />}>
-//       Create&nbsp;ad
-//     </Button>
-//   ),
-// },
 
-const rows = Array.from({ length: 100 }, (_, index) => {
-  return {
-    data: {
-      name: <Link href={`/${2 ** index}`}>{2 ** index}</Link>,
-      status: (
-        <Box display="flex" alignItems="center">
-          Failed&nbsp;
-          <DashboardTooltip
-            tooltipType={DashboardTooltipType.Error}
-            title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "
-          />
-        </Box>
-      ),
-    },
-    extraData: Boolean(Math.random() > 0.5)
-      ? {
-          Clicks: Math.floor(Math.random() * 100),
-          Impressions: Math.floor(Math.random() * 1000),
-        }
-      : undefined,
-  };
-});
+const Status = ({ status }: { status: string }) => {
+  if (status !== "Rejected") return <>{status}</>;
+
+  return (
+    <Box display="flex" alignItems="center">
+      Failed&nbsp;
+      <DashboardTooltip
+        tooltipType={DashboardTooltipType.Error}
+        title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "
+      />
+    </Box>
+  );
+};
+
+const createRows = (ads: Advertisement[]) =>
+  ads.map(
+    (ad, index) =>
+      ({
+        data: {
+          name: <Link href={ad.id}>{ad.ad_name}</Link>,
+          status: <Status status={ad.status} />,
+        },
+        extraData: {},
+      } as AccordionTableRow)
+  );
 
 export function Dashboard() {
   const [opened, setOpened] = React.useState(false);
@@ -68,6 +67,10 @@ export function Dashboard() {
   const [redirectLink, setRedirectLink] = React.useState("");
   const [file, setFile] = React.useState<File>();
   const [token, setToken] = React.useState("");
+  const { sendFileToTheta } = useTheta();
+  const { ads } = useDashboardAds();
+  const { stats } = useDashboardStats();
+  // const series = useMemo(() => , [stats]);
 
   const clearForm = () => {
     setAdName("");
@@ -106,17 +109,14 @@ export function Dashboard() {
     // currently getting 400 error.
 
     // Upload to our db
-    var uploadToDbResp = await fetch(
-      `/api/dashboard/advertisements?authId=${data.user?.id}`,
-      {
-        method: "POST",
-        body: JSON.stringify(adData),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        }),
-      }
-    );
+    var uploadToDbResp = await fetch(`${createAdUrl}?authId=${data.user?.id}`, {
+      method: "POST",
+      body: JSON.stringify(adData),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }),
+    });
     // if failure:
     // keep modal open;
     // display error text;
@@ -174,7 +174,7 @@ export function Dashboard() {
                 <Grid item xs={12}>
                   <AccordionTable
                     setModalOpen={setOpened}
-                    rows={rows}
+                    rows={createRows(ads)}
                     columns={COLUMNS}
                   />
                 </Grid>
