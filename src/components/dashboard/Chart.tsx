@@ -32,7 +32,7 @@ export const ImpressionsAndClicksChart = ({
   }, [totalClicks, totalImpressions]);
 
   const options: ApexOptions = {
-    colors: ["#5CC542", "#FFA500"],
+    colors: ["#FFA500", "#5CC542"],
     chart: {
       foreColor: "#FAFAFA",
       fontFamily: "Roboto",

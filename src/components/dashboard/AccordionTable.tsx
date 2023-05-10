@@ -62,9 +62,9 @@ function AccordionTableRow({ row }: AccordionTableRowProps) {
 }
 
 function GetExtraDataKeyColor(key: string) {
-  return key.includes("impressions")
+  return key.includes("clicks")
     ? "#5CC542"
-    : key.includes("clicks")
+    : key.includes("impressions")
     ? "#FFA500"
     : undefined;
 }
