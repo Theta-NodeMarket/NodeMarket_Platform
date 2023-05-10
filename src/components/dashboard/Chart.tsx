@@ -16,24 +16,27 @@ const defaultSeries: ApexAxisChartSeries = [
 export const ImpressionsAndClicksChart = ({
   series,
 }: ImpressionsAndClicksChartProps) => {
-
   function getTotalClicks() {
+    const clicksDataArray = series?.at(1)?.data ?? [];
+    const clicksDataArrayLength = clicksDataArray.length ?? 0; 
     let totalClicks: number = 0; 
     if(!series) return totalClicks;
-    for(let i = 0; i < series[1].data.length; i++)
+    for(let i = 0; i < clicksDataArrayLength; i++)
     {
-      totalClicks = series[1].data[i] + totalClicks;
+      totalClicks = totalClicks + (clicksDataArray[i]?.y ?? 0);
     }
   
     return totalClicks;
   }
   
   function getTotalImpressions() {
+    const impressionsDataArray = series?.at(0)?.data ?? [];
+    const impressionsDataArrayLength = impressionsDataArray.length ?? 0; 
     let totalImpressions = 0; 
     if(!series) return totalImpressions;
-    for(let i = 0; i < series[0].data.length; i++)
+    for(let i = 0; i < impressionsDataArrayLength; i++)
     {
-      totalImpressions = series[0].data[i] + totalImpressions;
+      totalImpressions = totalImpressions + (impressionsDataArray[i]?.y ?? 0);
     }
   
     return totalImpressions;
