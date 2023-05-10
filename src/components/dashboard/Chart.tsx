@@ -8,42 +8,50 @@ const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export interface ImpressionsAndClicksChartProps {
   series?: ApexAxisChartSeries;
 }
-
-function getTotalClicks() {
-  let totalClicks: number = 0; 
-  for(let i = 0; i < defaultSeries[0].data.length; i++)
-  {
-    totalClicks = defaultSeries[0].data[i] + totalClicks;
-  }
-
-  return totalClicks;
-}
-
-function getTotalImpressions() {
-  let totalImpressions = 0; 
-  for(let i = 0; i < defaultSeries[1].data.length; i++)
-  {
-    totalImpressions = defaultSeries[1].data[i] + totalImpressions;
-  }
-
-  return totalImpressions;
-}
-
-function getClickThruRate() {
-  const clicks = getTotalClicks();
-  const impressions = getTotalImpressions();
-
-  return ((clicks / impressions)*100).toPrecision(2).toString().concat("%");
-}
-
 const defaultSeries: ApexAxisChartSeries = [
-  { name: "Clicks", data: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81] },
   { name: "Impressions", data: [0, 1, 2, 4, 8, 16, 32, 64, 128, 256] },
+  { name: "Clicks", data: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81] },
 ];
 
 export const ImpressionsAndClicksChart = ({
-  series = defaultSeries,
+  series,
 }: ImpressionsAndClicksChartProps) => {
+
+  function getTotalClicks() {
+    let totalClicks: number = 0; 
+    if(!series) return totalClicks;
+    for(let i = 0; i < series[1].data.length; i++)
+    {
+      totalClicks = series[1].data[i] + totalClicks;
+    }
+  
+    return totalClicks;
+  }
+  
+  function getTotalImpressions() {
+    let totalImpressions = 0; 
+    if(!series) return totalImpressions;
+    for(let i = 0; i < series[0].data.length; i++)
+    {
+      totalImpressions = series[0].data[i] + totalImpressions;
+    }
+  
+    return totalImpressions;
+  }
+
+  function getClickThruRate() {
+    const clicks = getTotalClicks();
+    const impressions = getTotalImpressions();
+    if(clicks === 0 && impressions === 0)
+    {
+      return (0).toString().concat("%");
+    }
+
+  
+    return ((clicks / impressions)*100).toPrecision(2).toString().concat("%");
+  }
+  
+
   const options: ApexOptions = {
     colors: ['#5CC542', '#FFA500'],
     chart: {

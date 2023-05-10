@@ -49,7 +49,7 @@ const Status = ({ status }: { status: string }) => {
       Failed&nbsp;
       <DashboardTooltip
         tooltipType={DashboardTooltipType.Error}
-        title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future. "
+        title="Please ensure that the video or image provided is not offensive and is not NSFW. Support for material considered NSFW may be added in the future."
       />
     </Box>
   );
