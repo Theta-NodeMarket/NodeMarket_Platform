@@ -7,8 +7,12 @@ import styles from "./createAdvertisementForm.module.scss";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
-export default function CreateAdvertisementForm() {
-  const { adName, setAdName, redirectLink, setRedirectLink, file, setFile } =
+interface formProps {
+  submissionErrorMessage: string;
+}
+
+export default function CreateAdvertisementForm(props: formProps) {
+  const { adName, setAdName, redirectLink, setRedirectLink, file, setFile, adNameError, redirectLinkError, fileError, validateAdNameInput, validateRedirectLinkInput } =
     React.useContext(ModalContext);
 
   const handleAdNameUpdate = (value: string) => {
@@ -27,14 +31,20 @@ export default function CreateAdvertisementForm() {
     <form>
       <Grid container gap={3}>
         <Grid item xs={12}>
+          {props.submissionErrorMessage.length > 0 ? <Typography variant="body1" color={"#FF0000"}>{props.submissionErrorMessage}</Typography> : ""}
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             className={styles.textField}
-            autoFocus
             margin="dense"
             id="Advertisement Name"
             label="Advertisement Name"
             type="text"
             fullWidth
+            onBlur={validateAdNameInput}
+            error={adNameError.length > 0 ? true : false}
+            helperText={adNameError.length > 0 ? adNameError : ""}
+            required
             variant="standard"
             value={adName}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +60,10 @@ export default function CreateAdvertisementForm() {
             label="Redirect Link"
             type="text"
             fullWidth
+            onBlur={validateRedirectLinkInput}
+            error={redirectLinkError.length > 0 ? true : false}
+            helperText={redirectLinkError.length > 0 ? redirectLinkError : ""}
+            required
             variant="standard"
             value={redirectLink}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,13 +74,13 @@ export default function CreateAdvertisementForm() {
 
         <Grid item xs={12}>
           <Stack
-            direction={"row"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
+            direction={"column"}
+            alignItems={"flex-start"}
           >
             <Button variant="contained" component="label">
-              Upload media
+              Upload media *
               <input
+                required
                 hidden
                 accept="image/*, video/*"
                 type="file"
@@ -75,6 +89,9 @@ export default function CreateAdvertisementForm() {
                 }}
               />
             </Button>
+            <Typography sx={{fontSize: ".75rem", marginTop: "3px", lineHeight: "1.66", letterSpacing: "0.03333em", color: "#FF0000"}}>
+              {fileError.length > 0 ? fileError : ""}
+            </Typography>
           </Stack>
         </Grid>
         <Grid item xs={12}>
