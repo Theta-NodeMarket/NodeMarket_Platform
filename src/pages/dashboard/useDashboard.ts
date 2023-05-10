@@ -1,20 +1,12 @@
+import { AdWithStats, Statistic } from "@/models/api";
 import { supabase } from "@/utils/supabase";
 import { useEffect, useState } from "react";
 
 const adsUrl = "/api/dashboard/campaigns";
 const statsUrl = "/api/dashboard/stats";
 
-export interface Advertisement {
-  id: string;
-  token: string;
-  redirect_link: string;
-  media_type: string;
-  ad_name: string;
-  status: string;
-}
-
 export const useDashboardAds = () => {
-  const [ads, setAds] = useState<Advertisement[]>([]);
+  const [ads, setAds] = useState<AdWithStats[]>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
@@ -32,15 +24,6 @@ export const useDashboardAds = () => {
 };
 
 // todo: fix authentication
-export interface Statistic {
-  ad_id: string;
-  auth_id: string;
-  date_key: string;
-  impressions: number;
-  clicks: number;
-  created_date: string;
-  updated_date: string;
-}
 
 export const useDashboardStats = () => {
   const [stats, setStats] = useState<Statistic[]>();

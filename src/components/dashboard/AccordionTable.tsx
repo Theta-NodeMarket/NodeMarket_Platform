@@ -10,9 +10,16 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { ReactNode, useMemo, useState } from "react";
-import { Box, TablePagination, Typography, Stack, Grid, Button } from "@mui/material";
+import {
+  Box,
+  TablePagination,
+  Typography,
+  Stack,
+  Grid,
+  Button,
+} from "@mui/material";
 
 interface AccordionTableRowProps {
   row: AccordionTableRow;
@@ -54,9 +61,12 @@ function AccordionTableRow({ row }: AccordionTableRowProps) {
   );
 }
 
-function GetExtraDataKeyColor(key: string)
-{
-  return key.includes("clicks") ? "#5CC542" : "#FFA500"; 
+function GetExtraDataKeyColor(key: string) {
+  return key.includes("impressions")
+    ? "#5CC542"
+    : key.includes("clicks")
+    ? "#FFA500"
+    : undefined;
 }
 
 export const DisplayExtraData = ({
@@ -66,12 +76,12 @@ export const DisplayExtraData = ({
     <Box sx={{ p: 2, display: "flex", gap: 2 }}>
       {Object.entries(extraData!).map(([key, value], index) => (
         <Stack direction={"row"} key={index}>
-          <Typography style={{color: GetExtraDataKeyColor(key.toLowerCase())}}>
+          <Typography
+            style={{ color: GetExtraDataKeyColor(key.toLowerCase()) }}
+          >
             {key}
           </Typography>
-          <Typography>
-            : {value}
-          </Typography>
+          <Typography>: {value}</Typography>
         </Stack>
       ))}
     </Box>
@@ -116,7 +126,7 @@ export const AccordionTable = ({
     enablePagination: rows.length > initialPageRowCount,
     pageRowCount: initialPageRowCount,
     rowsPerPageOptions: initialRowsPerPageOptions,
-  }
+  },
 }: AccordionTableProps) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pageRowCount);
@@ -132,21 +142,37 @@ export const AccordionTable = ({
   return (
     <Grid container gap={".5em"}>
       <Grid item xs={12}>
-        <Grid container direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
+        <Grid
+          container
+          direction={"row"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
           <Grid item xs={6} md={8}>
             <Typography variant="h6">Advertisements</Typography>
           </Grid>
           <Grid item xs={6} md={4}>
-            <Button startIcon={<AddRoundedIcon/>}
+            <Button
+              startIcon={<AddRoundedIcon />}
               fullWidth
-              variant="contained" onClick={()=>{setModalOpen(true)}}>
+              variant="contained"
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            >
               Create new advertisement
             </Button>
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <TableContainer component={Paper} sx={{ backgroundColor: "transparent", border: "solid 1px rgba(250, 250, 250, .25)", }}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            backgroundColor: "transparent",
+            border: "solid 1px rgba(250, 250, 250, .25)",
+          }}
+        >
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>

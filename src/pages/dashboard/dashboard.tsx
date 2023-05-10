@@ -14,12 +14,9 @@ import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm"
 import { useTheta } from "@/hooks/useTheta";
 import Router from "next/router";
 
-import {
-  Advertisement,
-  useDashboardAds,
-  useDashboardStats,
-} from "./useDashboard";
+import { useDashboardAds, useDashboardStats } from "./useDashboard";
 import { supabase } from "@/utils/supabase";
+import { AdWithStats, Advertisement } from "@/models/api";
 
 const createAdUrl = "/api/dashboard/campaigns";
 
@@ -33,8 +30,8 @@ interface FormParams {
   adNameError: string;
   redirectLinkError: string;
   fileError: string;
-  validateAdNameInput: ()=>Boolean;
-  validateRedirectLinkInput: ()=>Boolean;
+  validateAdNameInput: () => Boolean;
+  validateRedirectLinkInput: () => Boolean;
 }
 
 export const ModalContext = React.createContext<FormParams>(undefined!);
@@ -55,7 +52,7 @@ const Status = ({ status }: { status: string }) => {
   );
 };
 
-const createRows = (ads: Advertisement[]) =>
+const createRows = (ads: AdWithStats[] = []) =>
   ads.map(
     (ad, index) =>
       ({
@@ -63,7 +60,10 @@ const createRows = (ads: Advertisement[]) =>
           name: <Link href={ad.id}>{ad.ad_name}</Link>,
           status: <Status status={ad.status} />,
         },
-        extraData: {},
+        extraData: {
+          Impressions: ad.impressions,
+          Clicks: ad.clicks,
+        },
       } as AccordionTableRow)
   );
 
@@ -121,51 +121,43 @@ export function Dashboard() {
     if (!adName) {
       setAdNameError("An advertisment name is required.");
       isValid = false;
-    }
-    else
-    {
+    } else {
       setAdNameError("");
     }
 
     return isValid;
-  }
+  };
 
   const validateRedirectLinkInput = () => {
     let isValid = true;
     if (!redirectLink) {
       setRedirectLinkError("A redirect link is required.");
       isValid = false;
-    }
-    else
-    {
+    } else {
       setRedirectLinkError("");
     }
 
     return isValid;
-  }
+  };
 
   const validateFileInput = () => {
     let isValid = true;
     if (!file) {
       setFileError("An image or video file is required.");
       isValid = false;
-    }
-    else
-    {
+    } else {
       setFileError("");
     }
 
     return isValid;
-  }
-
+  };
 
   const handleSubmit = async () => {
-
     let isValid = true;
     isValid = validateAdNameInput();
     isValid = validateRedirectLinkInput();
     isValid = validateFileInput();
-    if(!isValid) return;
+    if (!isValid) return;
 
     // upload to theta
     var response = await sendFileToTheta(file!);
@@ -174,8 +166,7 @@ export function Dashboard() {
     // keep modal open
     // display error text
     // return
-    if (typeof response === "string") 
-    {
+    if (typeof response === "string") {
       setSubmitError(response);
       return; // if theta says no.
     }
@@ -283,7 +274,11 @@ export function Dashboard() {
                 setModalOpen={setOpened}
                 onCancel={ResetForm}
                 onSubmit={handleSubmit}
-                modalContent={<CreateAdvertisementForm submissionErrorMessage={submitError}/>}
+                modalContent={
+                  <CreateAdvertisementForm
+                    submissionErrorMessage={submitError}
+                  />
+                }
               />
             </ModalContext.Provider>
           </Grid>

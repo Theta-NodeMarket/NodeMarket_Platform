@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
-import { adTable, campaignTable } from "@/utils/consts";
+import { adTable, campaignTable, promoTable } from "@/utils/consts";
+import { AdWithStats, Advertisement } from "@/models/api";
 
 const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -23,9 +24,26 @@ export default async function handler(
         .select(`${adTable} (*)`)
         .eq("auth_id", authId);
 
-      const ads = data?.map((data) => data?.advertisements);
+      const ads = data?.map((data) => data?.advertisements) as Advertisement[];
 
-      return res.json(ads);
+      const promos = await Promise.all(
+        ads?.map(async (ad) => {
+          const { data } = await supabase
+            .from(promoTable)
+            .select()
+            .eq("ad_id", ad.id)
+            .eq("auth_id", authId);
+
+          const impressions = data?.reduce(
+            (prev, { impressions }) => prev + impressions,
+            0
+          );
+          const clicks = data?.reduce((prev, { clicks }) => prev + clicks, 0);
+          return { ...ad, clicks, impressions } as AdWithStats;
+        })
+      );
+
+      return res.json(promos);
     } catch (err) {
       return res.status(500).json(err);
     }
