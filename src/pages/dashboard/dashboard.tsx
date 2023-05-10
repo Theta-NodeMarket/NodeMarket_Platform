@@ -70,7 +70,28 @@ export function Dashboard() {
   const { sendFileToTheta } = useTheta();
   const { ads } = useDashboardAds();
   const { stats } = useDashboardStats();
-  // const series = useMemo(() => , [stats]);
+  const series = useMemo(
+    () =>
+      stats
+        ? [
+            {
+              name: "Impressions",
+              data:
+                stats?.map((stat) => ({
+                  x: stat.date_key,
+                  y: stat.impressions,
+                })) ?? [],
+            },
+            {
+              name: "Clicks",
+              data:
+                stats?.map((stat) => ({ x: stat.date_key, y: stat.clicks })) ??
+                [],
+            },
+          ]
+        : undefined,
+    [stats]
+  );
 
   const clearForm = () => {
     setAdName("");
@@ -169,7 +190,9 @@ export function Dashboard() {
             <Grid item xs={12}>
               <Grid container spacing={"24px"}>
                 <Grid item xs={12}>
-                  <ImpressionsAndClicksChart />
+                  {series ? (
+                    <ImpressionsAndClicksChart series={series} />
+                  ) : null}
                 </Grid>
                 <Grid item xs={12}>
                   <AccordionTable
