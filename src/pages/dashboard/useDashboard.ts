@@ -1,4 +1,5 @@
-import { AdWithStats, Statistic } from "@/models/api";
+import { useFetchEffect } from "@/hooks/useFetch";
+import { AdWithStats, Advertisement, Statistic } from "@/models/api";
 import { supabase } from "@/utils/supabase";
 import { useEffect, useState } from "react";
 
@@ -23,8 +24,6 @@ export const useDashboardAds = () => {
   return { ads, error };
 };
 
-// todo: fix authentication
-
 export const useDashboardStats = () => {
   const [stats, setStats] = useState<Statistic[]>();
   const [error, setError] = useState<Error>();
@@ -41,16 +40,14 @@ export const useDashboardStats = () => {
   return { stats, error };
 };
 
-// not using useFetch since userId requires async
-// const useFetch = <T>(url: string, options?: RequestInit) => {
-//   const [data, setData] = useState<T>();
-//   const [error, setError] = useState<Error>();
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const response = await fetch(url, options);
-//       return (await response.json()) as T;
-//     };
-//     fetchData().then(setData).catch(setError);
-//   }, [url, options]);
-//   return { data, error };
-// };
+export const useDashboardAd = (adId: string) => {
+  const url = `${adsUrl}/${adId}`;
+  const { data: [ad] = [], error } = useFetchEffect<Advertisement[]>(url);
+  return { ad, error };
+};
+
+export const useDashboardAdStats = (adId: string) => {
+  const url = `${statsUrl}/${adId}`;
+  const { data: stats, error } = useFetchEffect<Statistic[]>(url);
+  return { stats, error };
+};

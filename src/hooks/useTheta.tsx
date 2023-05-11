@@ -1,11 +1,11 @@
-const thetaUrl = "https://api.thetaedgestore.com/api/v2/data";
+import { thetaUploadUrl } from "@/utils/consts";
 
 async function getAuthToken() {
-  if (!window.ethereum) return("No Web3 Provider!");
+  if (!window.ethereum) return "No Web3 Provider!";
   const accounts = await window.ethereum.request<any>({
     method: "eth_requestAccounts",
   });
-  if (!accounts) return("No Web3 Accounts!");
+  if (!accounts) return "No Web3 Accounts!";
   const address = accounts[0];
   const timestamp = Date.now().toString();
   const msg = "Theta EdgeStore Call " + timestamp;
@@ -28,7 +28,10 @@ async function getAuthToken() {
 
 const sendFileToTheta = async (file: File) => {
   const token = await getAuthToken();
-  if(token.includes("No Web3 Provider!") || token.includes("No Web3 Accounts!"))
+  if (
+    token.includes("No Web3 Provider!") ||
+    token.includes("No Web3 Accounts!")
+  )
     return token;
 
   const headers = new Headers();
@@ -38,7 +41,7 @@ const sendFileToTheta = async (file: File) => {
   const form = new FormData();
   form.append("directory", file, `./${file.name}`);
 
-  const res = await fetch(thetaUrl, {
+  const res = await fetch(thetaUploadUrl, {
     method: "POST",
     body: form,
     headers,

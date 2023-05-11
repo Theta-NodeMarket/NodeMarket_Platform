@@ -57,7 +57,7 @@ const createRows = (ads: AdWithStats[] = []) =>
     (ad, index) =>
       ({
         data: {
-          name: <Link href={ad.id}>{ad.ad_name}</Link>,
+          name: <Link href={`/dashboard/ads/${ad.id}`}>{ad.ad_name}</Link>,
           status: <Status status={ad.status} />,
         },
         extraData: {
@@ -225,65 +225,38 @@ export function Dashboard() {
     validateRedirectLinkInput,
   };
 
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder",
-  ];
-
   return (
-    <>
-      {
-        <Container fixed>
-          <Grid container alignItems={"center"} gap={"24px"}>
+    <Container fixed>
+      <Grid container alignItems={"center"} gap={"24px"}>
+        <Grid item xs={12}>
+          <Grid container spacing={"24px"}>
             <Grid item xs={12}>
-              <FilterParams
-                selectorTitle="Advertisement Filter"
-                selectorItems={names}
-              />
+              {series ? <ImpressionsAndClicksChart series={series} /> : null}
             </Grid>
             <Grid item xs={12}>
-              <Grid container spacing={"24px"}>
-                <Grid item xs={12}>
-                  {series ? (
-                    <ImpressionsAndClicksChart series={series} />
-                  ) : null}
-                </Grid>
-                <Grid item xs={12}>
-                  <AccordionTable
-                    setModalOpen={setOpened}
-                    rows={createRows(ads)}
-                    columns={COLUMNS}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <ModalContext.Provider value={value}>
-              <Modal
-                modalTitle="Create Advertisement"
-                modalSubmitText="Submit"
-                modalOpen={opened}
+              <AccordionTable
                 setModalOpen={setOpened}
-                onCancel={ResetForm}
-                onSubmit={handleSubmit}
-                modalContent={
-                  <CreateAdvertisementForm
-                    submissionErrorMessage={submitError}
-                  />
-                }
+                rows={createRows(ads)}
+                columns={COLUMNS}
               />
-            </ModalContext.Provider>
+            </Grid>
           </Grid>
-        </Container>
-      }
-    </>
+        </Grid>
+
+        <ModalContext.Provider value={value}>
+          <Modal
+            modalTitle="Create Advertisement"
+            modalSubmitText="Submit"
+            modalOpen={opened}
+            setModalOpen={setOpened}
+            onCancel={ResetForm}
+            onSubmit={handleSubmit}
+            modalContent={
+              <CreateAdvertisementForm submissionErrorMessage={submitError} />
+            }
+          />
+        </ModalContext.Provider>
+      </Grid>
+    </Container>
   );
 }

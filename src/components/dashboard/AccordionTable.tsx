@@ -101,7 +101,7 @@ export interface AccordionTableRow {
 }
 
 export interface AccordionTableProps {
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   columns: AccordionTableColumn[];
   rows: AccordionTableRow[];
   paginationOptions?: {
@@ -157,7 +157,7 @@ export const AccordionTable = ({
               fullWidth
               variant="contained"
               onClick={() => {
-                setModalOpen(true);
+                setModalOpen?.(true);
               }}
             >
               Create new advertisement
