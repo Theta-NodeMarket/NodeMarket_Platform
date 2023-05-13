@@ -17,6 +17,7 @@ import Router from "next/router";
 import { useDashboardAds, useDashboardStats } from "./useDashboard";
 import { supabase } from "@/utils/supabase";
 import { AdWithStats, Advertisement } from "@/models/api";
+import { acceptedFileTypes } from "@/utils/consts";
 
 const createAdUrl = "/api/dashboard/campaigns";
 
@@ -142,21 +143,41 @@ export function Dashboard() {
 
   const validateFileInput = () => {
     let isValid = true;
+    setFileError("");
     if (!file) {
       setFileError("An image or video file is required.");
       isValid = false;
-    } else {
-      setFileError("");
+    }
+
+    if (
+      file &&
+      acceptedFileTypes.some((item) => {
+        file.type.toLowerCase().includes(item);
+      })
+    ) {
+      console.log(file.type.toLowerCase());
+      setFileError(`We do not currently support ${file.type}.`);
+      isValid = false;
     }
 
     return isValid;
   };
 
+  const validateForm = () => {
+    let nameValidation = validateAdNameInput();
+    let redirectValidation = validateRedirectLinkInput();
+    let fileValidation = validateFileInput();
+
+    if (!nameValidation || !redirectValidation || !fileValidation) {
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
     let isValid = true;
-    isValid = validateAdNameInput();
-    isValid = validateRedirectLinkInput();
-    isValid = validateFileInput();
+    isValid = validateForm();
     if (!isValid) return;
 
     // upload to theta

@@ -4,6 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { glassCardBgSettings } from "@/utils/consts";
 
 interface IModalProps {
   modalTitle: string;
@@ -19,9 +20,13 @@ export default function GenericDialog(props: IModalProps) {
   return (
     <div>
       <Dialog open={props.modalOpen}>
-        <DialogTitle>{props.modalTitle}</DialogTitle>
-        <DialogContent>{props.modalContent}</DialogContent>
-        <DialogActions>
+        <DialogTitle style={{ background: glassCardBgSettings }}>
+          {props.modalTitle}
+        </DialogTitle>
+        <DialogContent style={{ background: glassCardBgSettings }}>
+          {props.modalContent}
+        </DialogContent>
+        <DialogActions style={{ background: glassCardBgSettings }}>
           <Button
             onClick={() => {
               props.onCancel?.();
