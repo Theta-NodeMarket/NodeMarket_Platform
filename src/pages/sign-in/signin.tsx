@@ -6,16 +6,15 @@ import {
   Typography,
   Alert,
   Collapse,
-  Divider,
 } from "@mui/material";
 import styles from "./signin.module.scss";
-import { useReducer, useState, useEffect } from "react";
-import { AuthControl } from "../api/AuthController";
+import { useReducer, useState } from "react";
 import { useRouter } from "next/router";
 import { signInSchema } from "../../validationSchemas/SignInValidation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRedirectIfUser } from "@/hooks";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -55,6 +54,7 @@ const signInDetails = {
 };
 
 export default function SignIn() {
+  const supabase = useSupabaseClient();
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
   const [state, dispatch] = useReducer(reducer, signInDetails);
@@ -83,13 +83,16 @@ export default function SignIn() {
   };
 
   const submitForm = async (e: any) => {
-    const response = await AuthControl.SignIn(state.email, state.password);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: state.email,
+      password: state.password,
+    });
 
-    if (response.error !== null) {
+    if (error !== null) {
       setServerError(true);
       dispatch({
         type: "updateServerError",
-        serverError: response.error.toString().replace("AuthApiError:", ""),
+        serverError: error.message,
       });
 
       setTimeout(() => {

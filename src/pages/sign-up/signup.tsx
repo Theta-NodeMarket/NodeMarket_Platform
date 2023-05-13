@@ -9,13 +9,14 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import styles from "./signup.module.scss";
-import { useReducer, useState, useEffect } from "react";
-import { AuthControl } from "../api/AuthController";
+import { useReducer, useState } from "react";
 import { useRouter } from "next/router";
 import { signUpSchema } from "../../validationSchemas/SignUpValidation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRedirectIfUser } from "@/hooks";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { withoutAuth } from "@/lib/withoutAuth";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -54,7 +55,8 @@ const signUpDetails = {
   serverError: "",
 };
 
-export default function SignUp() {
+function SignUp() {
+  const supabase = useSupabaseClient();
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
   const [state, dispatch] = useReducer(reducer, signUpDetails);
@@ -83,13 +85,16 @@ export default function SignUp() {
   };
 
   const submitForm = async (e: any) => {
-    const response = await AuthControl.SignUp(state.email, state.password);
+    const { error } = await supabase.auth.signUp({
+      email: state.email,
+      password: state.password,
+    });
 
-    if (response.error !== null) {
+    if (error !== null) {
       setServerError(true);
       dispatch({
         type: "updateServerError",
-        serverError: response.error.toString().replace("AuthApiError:", ""),
+        serverError: error.message,
       });
 
       setTimeout(() => {
@@ -171,3 +176,5 @@ export default function SignUp() {
     </Container>
   );
 }
+
+export default withoutAuth(SignUp, "/dashboard");
