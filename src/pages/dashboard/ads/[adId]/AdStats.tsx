@@ -19,7 +19,7 @@ export const RenderMedia = ({ ad }: AdStatsProps) => {
 
 export const AdStats = ({ ad }: AdStatsProps) => {
   return (
-    <Box display="flex">
+    <Box display="flex" gap={"24px"}>
       <RenderMedia ad={ad} />
       <Card
         sx={{

@@ -44,6 +44,8 @@ export const AdDetailPage = ({ adId }: AdDetailPageProps) => {
           <Grid container spacing={"24px"}>
             <Grid item xs={12}>
               {ad ? <AdStats ad={ad} /> : null}
+            </Grid>
+            <Grid item xs={12}>
               {series ? <ImpressionsAndClicksChart series={series} /> : null}
             </Grid>
           </Grid>
