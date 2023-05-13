@@ -9,14 +9,24 @@ import theme from "@/styles/theme";
 import "@/styles/globals.scss";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useState } from "react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
 
 export default function App({ Component, pageProps }: AppProps) {
+  // https://supabase.com/docs/guides/auth/auth-helpers/nextjs
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
   return (
-    <ThemeProvider theme={theme}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </LocalizationProvider>
-    </ThemeProvider>
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={pageProps.initialSession}
+    >
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </LocalizationProvider>
+      </ThemeProvider>
+    </SessionContextProvider>
   );
 }

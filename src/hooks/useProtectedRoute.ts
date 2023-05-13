@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { AuthControl } from "../pages/api/AuthController";
+import { useUser } from "@supabase/auth-helpers-react";
 
 export interface UseProtectedRouteOptions {
   redirectPath: string;
@@ -13,13 +13,11 @@ export function useRedirectIfNotUser(
   }
 ) {
   const [authLoading, setAuthLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  const user = useUser();
 
   useEffect(() => {
     async function validateUser() {
-      const { user } = await AuthControl.GetUser();
-      setUser(user);
       if (user === null || user === undefined) {
         router.replace(redirectPath);
         return;
@@ -28,7 +26,7 @@ export function useRedirectIfNotUser(
     }
 
     validateUser();
-  }, [router, redirectPath]);
+  }, [user, router, redirectPath]);
 
   return { authLoading, setAuthLoading, user };
 }
@@ -39,10 +37,10 @@ export function useRedirectIfUser(
   }
 ) {
   const router = useRouter();
+  const user = useUser();
 
   useEffect(() => {
     async function validateUser() {
-      const { user } = await AuthControl.GetUser();
       if (user === null || user === undefined) {
         return;
       }
@@ -50,5 +48,5 @@ export function useRedirectIfUser(
     }
 
     validateUser();
-  }, [router, redirectPath]);
+  }, [user, router, redirectPath]);
 }
