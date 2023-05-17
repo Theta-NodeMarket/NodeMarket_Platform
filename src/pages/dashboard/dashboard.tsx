@@ -204,8 +204,6 @@ export function Dashboard() {
       mediaType: file?.type,
     };
 
-    // currently getting 400 error.
-
     // Upload to our db
     var uploadToDbResp = await fetch(`${createAdUrl}?authId=${data.user?.id}`, {
       method: "POST",

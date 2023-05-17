@@ -18,7 +18,7 @@ export function DetailsCallout(props: DetailsCalloutProps) {
         return MAINGREEN;
       case "pending":
         return MAINYELLOW;
-      case "deleted":
+      case "deactivated":
         return MAINRED;
       case "rejected":
         return MAINRED;

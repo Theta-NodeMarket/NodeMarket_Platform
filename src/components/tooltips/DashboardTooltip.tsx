@@ -16,16 +16,31 @@ export default function DashboardTooltip(props: tooltipProps) {
       componentsProps={{
         tooltip: {
           sx: {
-            bgcolor: props.tooltipType === DashboardTooltipType.Error ? "#FF0000" : "#EEF22A",
-            color: props.tooltipType === DashboardTooltipType.Error ? "#FAFAFA" : "#181818",
+            bgcolor:
+              props.tooltipType === DashboardTooltipType.Error
+                ? "#FF0000"
+                : "#EEF22A",
+            color:
+              props.tooltipType === DashboardTooltipType.Error
+                ? "#FAFAFA"
+                : "#181818",
             "& .MuiTooltip-arrow": {
-              color: props.tooltipType === DashboardTooltipType.Error ? "#FF0000" : "#EEF22A",
+              color:
+                props.tooltipType === DashboardTooltipType.Error
+                  ? "#FF0000"
+                  : "#EEF22A",
             },
           },
         },
       }}
     >
-      <ReportProblemRoundedIcon htmlColor={props.tooltipType === DashboardTooltipType.Error ? "#FF0000" : "#EEF22A"} />
+      <ReportProblemRoundedIcon
+        htmlColor={
+          props.tooltipType === DashboardTooltipType.Error
+            ? "#FF0000"
+            : "#EEF22A"
+        }
+      />
     </Tooltip>
   );
 }
