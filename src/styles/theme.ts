@@ -37,51 +37,51 @@ const theme = createTheme({
   typography: {
     h1: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     h2: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     h3: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     h4: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     h5: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     h6: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     subtitle1: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     subtitle2: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     body1: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     body2: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     caption: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
     overline: {
       color: "#FAFAFA",
-      fontFamily: "Roboto"
+      fontFamily: "Roboto",
     },
   },
   components: {
@@ -90,13 +90,13 @@ const theme = createTheme({
       styleOverrides: {
         // Name of the slot
         root: ({ ownerState }) => ({
-          ...(ownerState.variant === 'contained' &&
-            ownerState.color === 'primary' && {
-              color: '#181818',
-          }),
+          ...(ownerState.variant === "contained" &&
+            ownerState.color === "primary" && {
+              color: "#181818",
+            }),
         }),
       },
-    }
+    },
   },
 });
 

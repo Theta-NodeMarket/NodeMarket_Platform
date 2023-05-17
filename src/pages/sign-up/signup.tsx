@@ -6,6 +6,12 @@ import {
   Typography,
   Alert,
   Collapse,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  FormHelperText,
 } from "@mui/material";
 import Link from "next/link";
 import styles from "./signup.module.scss";
@@ -14,9 +20,11 @@ import { useRouter } from "next/router";
 import { signUpSchema } from "../../validationSchemas/SignUpValidation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRedirectIfUser } from "@/hooks";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { withoutAuth } from "@/lib/withoutAuth";
+import { MAINRED } from "@/utils/consts";
+
+const roles = ["Advertiser", "Promoter"];
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -32,10 +40,17 @@ const reducer = (state: any, action: any) => {
         password: action.password,
       };
     }
+    case "updateRole": {
+      return {
+        ...state,
+        role: action.role,
+      };
+    }
     case "clearState": {
       return {
         email: "",
         password: "",
+        role: "",
       };
     }
     case "updateServerError": {
@@ -52,6 +67,7 @@ const reducer = (state: any, action: any) => {
 const signUpDetails = {
   email: "",
   password: "",
+  role: "",
   serverError: "",
 };
 
@@ -82,7 +98,16 @@ function SignUp() {
     });
   };
 
+  const handleRoleChange = (e: any) => {
+    dispatch({
+      type: "updateRole",
+      role: e.target.value,
+    });
+  };
+
   const submitForm = async (e: any) => {
+    // please add role meta data to submisson
+
     const { error } = await supabase.auth.signUp({
       email: state.email,
       password: state.password,
@@ -129,9 +154,8 @@ function SignUp() {
               error={errors?.email?.message != null}
               helperText={errors?.email?.message?.toString()}
               id="email"
-              label="Email address"
+              label="Email address *"
               variant="standard"
-              required
               fullWidth
               autoComplete="email"
               value={state.email}
@@ -144,15 +168,36 @@ function SignUp() {
               error={errors?.password?.message != null}
               helperText={errors?.password?.message?.toString()}
               id="password"
-              label="Password"
+              label="Password *"
               type="password"
               variant="standard"
-              required
               fullWidth
               autoComplete="new-password"
               value={state.password}
               onChange={(e) => handlePasswordChange(e)}
             />
+          </Grid>
+          <Grid item xs={12} className={styles.gridItemInput}>
+            <FormControl>
+              <FormLabel id="role">Role *</FormLabel>
+              <RadioGroup
+                value={state.role}
+                onChange={(e) => handleRoleChange(e)}
+              >
+                {roles.map((role, index) => (
+                  <FormControlLabel
+                    {...register("role")}
+                    key={index}
+                    value={role}
+                    control={<Radio />}
+                    label={role}
+                  />
+                ))}
+              </RadioGroup>
+              <FormHelperText style={{ color: MAINRED }}>
+                {errors?.role?.message?.toString()}
+              </FormHelperText>
+            </FormControl>
           </Grid>
           <Grid item xs={12} className={styles.gridItemButton}>
             <Button variant="contained" fullWidth type="submit">
