@@ -27,14 +27,14 @@ body {
 body {
   color: rgb(var(--foreground-rgb));
   background-color: black;
-  background-image: url("../assets/stars.jpg");
+  background-image: url("../../public/images/stars.jpg");
   background-image: linear-gradient(
       to right,
       rgba(0, 0, 0, 1),
       rgba(0, 0, 0, 0)
     ),
     linear-gradient(to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-    url("../assets/stars.jpg");
+    url("../../public/images/stars.jpg");
 
   background-repeat: no-repeat;
   background-size: cover;
