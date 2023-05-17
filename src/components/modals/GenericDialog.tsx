@@ -41,6 +41,3 @@ export default function GenericDialog(props: IModalProps) {
     </div>
   );
 }
-
-/* On cancel close modal and reset form */
-/* On submit modal and submit form using vm logic */
