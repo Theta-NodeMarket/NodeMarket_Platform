@@ -6,6 +6,7 @@ import {
   Typography,
   Alert,
   Collapse,
+  CircularProgress,
 } from "@mui/material";
 import styles from "./signin.module.scss";
 import { useReducer, useState } from "react";
@@ -57,6 +58,7 @@ function SignIn() {
   const supabase = useSupabaseClient();
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, signInDetails);
   const {
     register,
@@ -81,12 +83,14 @@ function SignIn() {
   };
 
   const submitForm = async (e: any) => {
+    setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: state.email,
       password: state.password,
     });
 
     if (error !== null) {
+      setLoading(false);
       setServerError(true);
       dispatch({
         type: "updateServerError",
@@ -108,7 +112,7 @@ function SignIn() {
 
   return (
     <Container maxWidth={"sm"}>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form>
         <Grid
           container
           className={styles.signUpGrid}
@@ -116,57 +120,61 @@ function SignIn() {
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
-            <Typography variant="h4" className={styles.heading}>
-              Sign In
-            </Typography>
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemInput}>
-            <TextField
-              {...register("email")}
-              error={errors?.email?.message != null}
-              helperText={errors?.email?.message?.toString()}
-              id="email"
-              label="Email address"
-              variant="standard"
-              required
-              fullWidth
-              autoComplete="email"
-              value={state.email}
-              onChange={(e) => handleEmailChange(e)}
-            />
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemInput}>
-            <TextField
-              {...register("password")}
-              error={errors?.password?.message != null}
-              helperText={errors?.password?.message?.toString()}
-              id="password"
-              label="Password"
-              type="password"
-              variant="standard"
-              required
-              fullWidth
-              autoComplete="current-password"
-              value={state.password}
-              onChange={(e) => handlePasswordChange(e)}
-            />
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemButton}>
-            <Button variant="contained" fullWidth type="submit">
-              Sign In
-            </Button>
-          </Grid>
-          <Grid item xs={6} className={styles.gridItemHeadingAndLink}>
-            <Button variant="outlined" type="button" href="/sign-up">
-              Create new account
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Collapse in={serverError}>
-              <Alert severity="error">{state.serverError}</Alert>
-            </Collapse>
-          </Grid>
+          {loading ?
+            <CircularProgress color="primary"/>
+            : 
+            <> 
+              <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
+                <Typography variant="h4" className={styles.heading}>
+                  Sign In
+                </Typography>
+              </Grid>
+              <Grid item xs={12} className={styles.gridItemInput}>
+                <TextField
+                  {...register("email")}
+                  error={errors?.email?.message != null}
+                  helperText={errors?.email?.message?.toString()}
+                  id="email"
+                  label="Email address *"
+                  variant="standard"
+                  fullWidth
+                  autoComplete="email"
+                  value={state.email}
+                  onChange={(e) => handleEmailChange(e)}
+                />
+              </Grid>
+              <Grid item xs={12} className={styles.gridItemInput}>
+                <TextField
+                  {...register("password")}
+                  error={errors?.password?.message != null}
+                  helperText={errors?.password?.message?.toString()}
+                  id="password"
+                  label="Password *"
+                  type="password"
+                  variant="standard"
+                  fullWidth
+                  autoComplete="current-password"
+                  value={state.password}
+                  onChange={(e) => handlePasswordChange(e)}
+                />
+              </Grid>
+              <Grid item xs={12} className={styles.gridItemButton}>
+                <Button variant="contained" fullWidth onClick={handleSubmit(submitForm)}>
+                  Sign In
+                </Button>
+              </Grid>
+              <Grid item xs={6} className={styles.gridItemHeadingAndLink}>
+                <Button variant="outlined" type="button" href="/sign-up">
+                  Create new account
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Collapse in={serverError}>
+                  <Alert severity="error">{state.serverError}</Alert>
+                </Collapse>
+              </Grid>
+            </>
+          }
         </Grid>
       </form>
     </Container>

@@ -6,6 +6,8 @@ import { ModalContext } from "../../pages/dashboard/dashboard";
 import styles from "./createAdvertisementForm.module.scss";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import DashboardTooltip from "../tooltips/DashboardTooltip";
+import { DashboardTooltipType } from "@/types/DashboardTooltipType";
 
 interface formProps {
   submissionErrorMessage: string;
@@ -30,8 +32,29 @@ export default function CreateAdvertisementForm(props: formProps) {
   return (
     <form>
       <Grid container gap={3}>
-        <Grid item xs={12}>
-          {props.submissionErrorMessage.length > 0 ? <Typography variant="body1" color={"#FF0000"}>{props.submissionErrorMessage}</Typography> : ""}
+        <Grid 
+          item 
+          xs={12} 
+          sx={{
+            display: "flex",
+            direction:"row",
+            alignItems: "center",
+            justifyContent: "space-around"
+            }}>
+
+          {props.submissionErrorMessage.length > 0 ? 
+            <>
+              <Typography variant="body1" color={"#FF0000"}>
+                {props.submissionErrorMessage}
+              </Typography> 
+              <DashboardTooltip 
+                title="We currently only support MetaMask. 
+                To create advertisements, download the MetaMask extension and create a wallet." 
+                tooltipType={DashboardTooltipType.Error}/>
+            </> :
+            null
+          }
+          
         </Grid>
         <Grid item xs={12}>
           <TextField

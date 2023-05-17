@@ -12,6 +12,7 @@ import {
   Radio,
   FormControlLabel,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
 import Link from "next/link";
 import styles from "./signup.module.scss";
@@ -75,6 +76,7 @@ function SignUp() {
   const supabase = useSupabaseClient();
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, signUpDetails);
   const {
     register,
@@ -106,14 +108,19 @@ function SignUp() {
   };
 
   const submitForm = async (e: any) => {
-    // please add role meta data to submisson
-
+    setLoading(true);
     const { error } = await supabase.auth.signUp({
       email: state.email,
       password: state.password,
+      options: {
+        data: {
+          role: state.role,
+        },
+      },
     });
 
     if (error !== null) {
+      setLoading(false);
       setServerError(true);
       dispatch({
         type: "updateServerError",
@@ -135,7 +142,7 @@ function SignUp() {
 
   return (
     <Container maxWidth={"sm"}>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form>
         <Grid
           container
           className={styles.signUpGrid}
@@ -143,77 +150,82 @@ function SignUp() {
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
-            <Typography variant="h4" className={styles.heading}>
-              Create a new account
-            </Typography>
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemInput}>
-            <TextField
-              {...register("email")}
-              error={errors?.email?.message != null}
-              helperText={errors?.email?.message?.toString()}
-              id="email"
-              label="Email address *"
-              variant="standard"
-              fullWidth
-              autoComplete="email"
-              value={state.email}
-              onChange={(e) => handleEmailChange(e)}
-            />
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemInput}>
-            <TextField
-              {...register("password")}
-              error={errors?.password?.message != null}
-              helperText={errors?.password?.message?.toString()}
-              id="password"
-              label="Password *"
-              type="password"
-              variant="standard"
-              fullWidth
-              autoComplete="new-password"
-              value={state.password}
-              onChange={(e) => handlePasswordChange(e)}
-            />
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemInput}>
-            <FormControl>
-              <FormLabel id="role">Role *</FormLabel>
-              <RadioGroup
-                value={state.role}
-                onChange={(e) => handleRoleChange(e)}
-              >
-                {roles.map((role, index) => (
-                  <FormControlLabel
-                    {...register("role")}
-                    key={index}
-                    value={role}
-                    control={<Radio />}
-                    label={role}
-                  />
-                ))}
-              </RadioGroup>
-              <FormHelperText style={{ color: MAINRED }}>
-                {errors?.role?.message?.toString()}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemButton}>
-            <Button variant="contained" fullWidth type="submit">
-              Sign Up
-            </Button>
-          </Grid>
-          <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
-            <Link className={styles.signInLink} href="/sign-in">
-              Already have an account?
-            </Link>
-          </Grid>
-          <Grid item xs={12}>
-            <Collapse in={serverError}>
-              <Alert severity="error">{state.serverError}</Alert>
-            </Collapse>
-          </Grid>
+          {loading ? 
+          <CircularProgress color="primary"/> :
+          <>
+            <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
+              <Typography variant="h4" className={styles.heading}>
+                Create a new account
+              </Typography>
+            </Grid>
+            <Grid item xs={12} className={styles.gridItemInput}>
+              <TextField
+                {...register("email")}
+                error={errors?.email?.message != null}
+                helperText={errors?.email?.message?.toString()}
+                id="email"
+                label="Email address *"
+                variant="standard"
+                fullWidth
+                autoComplete="email"
+                value={state.email}
+                onChange={(e) => handleEmailChange(e)}
+              />
+            </Grid>
+            <Grid item xs={12} className={styles.gridItemInput}>
+              <TextField
+                {...register("password")}
+                error={errors?.password?.message != null}
+                helperText={errors?.password?.message?.toString()}
+                id="password"
+                label="Password *"
+                type="password"
+                variant="standard"
+                fullWidth
+                autoComplete="new-password"
+                value={state.password}
+                onChange={(e) => handlePasswordChange(e)}
+              />
+            </Grid>
+            <Grid item xs={12} className={styles.gridItemInput}>
+              <FormControl>
+                <FormLabel id="role">Role *</FormLabel>
+                <RadioGroup
+                  value={state.role}
+                  onChange={(e) => handleRoleChange(e)}
+                >
+                  {roles.map((role, index) => (
+                    <FormControlLabel
+                      {...register("role")}
+                      key={index}
+                      value={role}
+                      control={<Radio />}
+                      label={role}
+                    />
+                  ))}
+                </RadioGroup>
+                <FormHelperText style={{ color: MAINRED }}>
+                  {errors?.role?.message?.toString()}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} className={styles.gridItemButton}>
+              <Button variant="contained" fullWidth onClick={handleSubmit(submitForm)}>
+                Sign Up
+              </Button>
+            </Grid>
+            <Grid item xs={12} className={styles.gridItemHeadingAndLink}>
+              <Link className={styles.signInLink} href="/sign-in">
+                Already have an account?
+              </Link>
+            </Grid>
+            <Grid item xs={12}>
+              <Collapse in={serverError}>
+                <Alert severity="error">{state.serverError}</Alert>
+              </Collapse>
+            </Grid>
+          </>
+        }
         </Grid>
       </form>
     </Container>

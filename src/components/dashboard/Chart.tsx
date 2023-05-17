@@ -3,6 +3,8 @@ import { Card, Grid, Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { glassCardBgSettings } from "@/utils/consts";
+import DashboardTooltip from "../tooltips/DashboardTooltip";
+import { DashboardTooltipType } from "@/types/DashboardTooltipType";
 // Next dies when it tries to SSR ApexChart
 // https://github.com/apexcharts/react-apexcharts/issues/240#issuecomment-1077335256
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -31,6 +33,17 @@ export const ImpressionsAndClicksChart = ({
     if (!quotient) return "0%";
     return (quotient * 100).toPrecision(2).concat("%");
   }, [totalClicks, totalImpressions]);
+
+  const NoData = useMemo(() => {
+    const impressionSeries =
+      (series?.[0]?.data as ApexAxisChartSeries[0]["data"][]) ?? [];
+    const clickSeries =
+      (series?.[1]?.data as ApexAxisChartSeries[1]["data"][]) ?? [];
+
+    if(impressionSeries.length <= 0 && clickSeries.length <= 0) return true;
+
+    return false;
+  }, [series]);
 
   const options: ApexOptions = {
     colors: ["#FFA500", "#5CC542"],
@@ -106,6 +119,7 @@ export const ImpressionsAndClicksChart = ({
             padding: "24px",
             alignItems: "center",
             flexDirection: "column",
+            position: "relative",
             gap: "12px",
             width: "100%",
           }}
@@ -113,6 +127,7 @@ export const ImpressionsAndClicksChart = ({
           <Stack
             direction={{ xs: "column", sm: "row" }}
             justifyContent={"center"}
+            alignItems={"center"}
             spacing={"24px"}
           >
             <Stack alignItems={"center"} justifyContent={"center"}>
@@ -127,6 +142,13 @@ export const ImpressionsAndClicksChart = ({
               <Typography variant="h4">{clickThroughRate}</Typography>
               <Typography variant="body1">Click through rate</Typography>
             </Stack>
+            {NoData ? 
+              <DashboardTooltip 
+                title='You currently have no metrics to display. 
+                Click the "CREATE NEW ADVERTISEMENT" button to add an advertisement. 
+                Once your advertisement is approved and starts generating clicks and impressions, the metrics will appear here.'
+                tooltipType={DashboardTooltipType.Warning}/> : null
+            }
           </Stack>
           <ApexChart
             options={options}
