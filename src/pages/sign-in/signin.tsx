@@ -13,8 +13,8 @@ import { useRouter } from "next/router";
 import { signInSchema } from "../../validationSchemas/SignInValidation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRedirectIfUser } from "@/hooks";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { withoutAuth } from "@/lib/withoutAuth";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -53,7 +53,7 @@ const signInDetails = {
   serverError: "",
 };
 
-export default function SignIn() {
+function SignIn() {
   const supabase = useSupabaseClient();
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
@@ -65,8 +65,6 @@ export default function SignIn() {
   } = useForm({
     resolver: yupResolver(signInSchema),
   });
-
-  useRedirectIfUser();
 
   const handleEmailChange = (e: any) => {
     dispatch({
@@ -174,3 +172,5 @@ export default function SignIn() {
     </Container>
   );
 }
+
+export default withoutAuth(SignIn, "/dashboard");

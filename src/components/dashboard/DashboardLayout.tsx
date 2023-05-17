@@ -23,6 +23,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren, useState } from "react";
 import { useRouter } from "next/router";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const drawerWidth = 200;
 
@@ -85,8 +86,13 @@ const MENU_CONFIGURATION: MenuItem[] = [
 ];
 
 export const DashboardLayout = ({ children }: PropsWithChildren) => {
+  const supabase = useSupabaseClient();
   const [open, setOpen] = useState(false);
   const router = useRouter();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -102,11 +108,13 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
             <MenuIcon />
           </IconButton>
           <Box sx={{ flexGrow: 1 }}>
-            <Link href="/" style={{display: "flex", alignItems: "center"}}>
+            <Link href="/" style={{ display: "flex", alignItems: "center" }}>
               <Image src={logo} alt="NodeMarket Logo" />
             </Link>
           </Box>
-          <Button color="inherit">Sign Out</Button>
+          <Button color="inherit" onClick={handleSignOut}>
+            Sign Out
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
