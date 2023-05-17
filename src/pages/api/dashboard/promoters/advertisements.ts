@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { adTable, promoTable } from "@/utils/consts";
 
 const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -17,8 +18,8 @@ export default async function handler(
 
   try {
     const { data: ads } = await supabase
-      .from("promotions")
-      .select(`*, advertisements (ad_name)`)
+      .from(promoTable)
+      .select(`*, ${adTable} (ad_name)`)
       .eq("auth_id", authId);
     return res.json(ads);
   } catch (err) {

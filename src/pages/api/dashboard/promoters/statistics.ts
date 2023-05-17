@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { promoTable } from "@/utils/consts";
 
 const supabase = createClient<any>(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -17,7 +18,7 @@ export default async function handler(
   // Gets all of the statistic data for advertisements that a promoter has served and earned credit for.
   try {
     const { data: ads } = await supabase
-      .from("promotions")
+      .from(promoTable)
       .select()
       .eq("auth_id", authId);
 

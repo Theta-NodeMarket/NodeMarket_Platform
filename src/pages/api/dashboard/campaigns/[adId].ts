@@ -17,7 +17,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       const { data: ads } = await supabase
-        .from("advertisements")
+        .from(adTable)
         .select()
         .eq("id", adId);
       // todo: verify user id has access to this ad
