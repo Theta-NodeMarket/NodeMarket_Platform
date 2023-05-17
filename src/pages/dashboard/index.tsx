@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import React from "react";
 import { useRedirectIfNotUser } from "@/hooks";
-import { Dashboard } from "./dashboard";
+import Dashboard from "./dashboard";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 
 export default function DashboardPage() {
