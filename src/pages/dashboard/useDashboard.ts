@@ -6,36 +6,34 @@ import { useEffect, useState } from "react";
 const adsUrl = "/api/dashboard/campaigns";
 const statsUrl = "/api/dashboard/stats";
 
-export const useDashboardAds = () => {
+export const useDashboardAds = (authId?: string) => {
   const [ads, setAds] = useState<AdWithStats[]>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
     const getAds = async () => {
-      const authId = (await supabase.auth.getUser()).data?.user?.id;
       const url = `${adsUrl}?authId=${authId}`;
       const response = await fetch(url);
       return await response.json();
     };
 
-    getAds().then(setAds).catch(setError);
-  }, []);
+    authId && getAds().then(setAds).catch(setError);
+  }, [authId]);
 
   return { ads, error };
 };
 
-export const useDashboardStats = () => {
+export const useDashboardStats = (authId?: string) => {
   const [stats, setStats] = useState<Statistic[]>();
   const [error, setError] = useState<Error>();
   useEffect(() => {
     const getStats = async () => {
-      const authId = (await supabase.auth.getUser()).data.user?.id;
       const url = `${statsUrl}?authId=${authId}`;
       const response = await fetch(url);
       return await response.json();
     };
-    getStats().then(setStats).catch(setError);
-  }, []);
+    authId && getStats().then(setStats).catch(setError);
+  }, [authId]);
 
   return { stats, error };
 };

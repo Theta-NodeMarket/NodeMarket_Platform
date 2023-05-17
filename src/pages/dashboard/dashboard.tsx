@@ -4,7 +4,7 @@ import {
   AccordionTableRow,
 } from "@/components/dashboard/AccordionTable";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { DashboardTooltipType } from "@/types/DashboardTooltipType";
@@ -15,8 +15,10 @@ import Router from "next/router";
 
 import { useDashboardAds, useDashboardStats } from "./useDashboard";
 import { supabase } from "@/utils/supabase";
-import { AdWithStats, Advertisement } from "@/models/api";
 import { acceptedFileTypes } from "@/utils/consts";
+import { AdWithStats } from "@/models/api";
+import { withAuth } from "@/lib/withAuth";
+import { useUser } from "@supabase/auth-helpers-react";
 
 const createAdUrl = "/api/dashboard/campaigns";
 
@@ -68,14 +70,17 @@ const createRows = (ads: AdWithStats[] = []) =>
   );
 
 function Dashboard() {
-  const [opened, setOpened] = React.useState(false);
-  const [adName, setAdName] = React.useState("");
-  const [redirectLink, setRedirectLink] = React.useState("");
-  const [file, setFile] = React.useState<File>();
-  const [token, setToken] = React.useState("");
+  const user = useUser();
   const { sendFileToTheta } = useTheta();
-  const { ads } = useDashboardAds();
-  const { stats } = useDashboardStats();
+  const { ads } = useDashboardAds(user?.id);
+  const { stats } = useDashboardStats(user?.id);
+
+  const [opened, setOpened] = useState(false);
+  const [adName, setAdName] = useState("");
+  const [redirectLink, setRedirectLink] = useState("");
+  const [file, setFile] = useState<File>();
+  const [token, setToken] = useState("");
+
   const series = useMemo(
     () =>
       stats
@@ -281,4 +286,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default withAuth(Dashboard);
