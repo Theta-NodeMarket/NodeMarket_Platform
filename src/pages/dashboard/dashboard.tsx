@@ -7,8 +7,7 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
-import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
-import { FilterParams } from "@/components/dashboard/FilterParams";
+import { DashboardTooltipType } from "@/types/DashboardTooltipType";
 import Modal from "@/components/modals/GenericDialog";
 import CreateAdvertisementForm from "@/components/forms/createAdvertisementForm";
 import { useTheta } from "@/hooks/useTheta";
@@ -68,7 +67,7 @@ const createRows = (ads: AdWithStats[] = []) =>
       } as AccordionTableRow)
   );
 
-export function Dashboard() {
+function Dashboard() {
   const [opened, setOpened] = React.useState(false);
   const [adName, setAdName] = React.useState("");
   const [redirectLink, setRedirectLink] = React.useState("");
@@ -281,3 +280,5 @@ export function Dashboard() {
     </Container>
   );
 }
+
+export default Dashboard;
