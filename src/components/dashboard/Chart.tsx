@@ -2,6 +2,7 @@ import { ApexOptions } from "apexcharts";
 import { Card, Grid, Stack, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import { glassCardBgSettings } from "@/utils/consts";
 // Next dies when it tries to SSR ApexChart
 // https://github.com/apexcharts/react-apexcharts/issues/240#issuecomment-1077335256
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -99,8 +100,7 @@ export const ImpressionsAndClicksChart = ({
       <Grid item xs={12}>
         <Card
           sx={{
-            background:
-              "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
+            background: glassCardBgSettings,
             border: "solid 1px rgba(250, 250, 250, .25)",
             display: "flex",
             padding: "24px",
