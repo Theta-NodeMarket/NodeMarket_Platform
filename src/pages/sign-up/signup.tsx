@@ -68,8 +68,6 @@ function SignUp() {
     resolver: yupResolver(signUpSchema),
   });
 
-  useRedirectIfUser();
-
   const handleEmailChange = (e: any) => {
     dispatch({
       type: "updateEmail",
