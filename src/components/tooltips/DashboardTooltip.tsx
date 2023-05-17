@@ -1,6 +1,6 @@
 import Tooltip from "@mui/material/Tooltip";
 import ReportProblemRoundedIcon from "@mui/icons-material/ReportProblemRounded";
-import { DashboardTooltipType } from "../../lib/DashboardTooltipType";
+import { DashboardTooltipType } from "@/types/DashboardTooltipType";
 import * as React from "react";
 
 interface tooltipProps {
