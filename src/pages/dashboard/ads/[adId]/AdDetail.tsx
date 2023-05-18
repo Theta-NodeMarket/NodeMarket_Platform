@@ -3,12 +3,13 @@ import { useDashboardAd, useDashboardAdStats } from "../../useDashboard";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { useMemo } from "react";
 import { AdStats } from "./AdStats";
+import { withAuth } from "@/lib/withAuth";
 
 export interface AdDetailPageProps {
   adId: string;
 }
 
-export const AdDetailPage = ({ adId }: AdDetailPageProps) => {
+const AdDetailPage = ({ adId }: AdDetailPageProps) => {
   const { ad, error: adError } = useDashboardAd(adId);
   const { stats, error: statsError } = useDashboardAdStats(adId);
 
@@ -55,4 +56,4 @@ export const AdDetailPage = ({ adId }: AdDetailPageProps) => {
   );
 };
 
-export default AdDetailPage;
+export default withAuth(AdDetailPage, "/sign-in");
