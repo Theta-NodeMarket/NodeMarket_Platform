@@ -17,7 +17,7 @@ const deleteAdUrl = "/api/dashboard/campaigns";
 export const RenderMedia = ({ ad }: AdStatsProps) => {
   const srcUrl = `${thetaDataUrl}${ad.token}`;
   if (ad.media_type.includes("video"))
-    return <video src={srcUrl} height="100%" width="100%" autoPlay style={{objectFit: "cover"}} />;
+    return <video src={srcUrl} height="100%" width="100%" autoPlay controls style={{objectFit: "cover"}} />;
   if (ad.media_type.includes("image"))
     return (
       <img
