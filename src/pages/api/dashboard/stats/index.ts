@@ -31,7 +31,8 @@ export default async function handler(
     const { data: stats } = await supabase
       .from(promoTable)
       .select()
-      .in("ad_id", adIds);
+      .in("ad_id", adIds)
+      .order("date_key", { ascending: true });
 
     return res.json(stats);
   } catch (err) {

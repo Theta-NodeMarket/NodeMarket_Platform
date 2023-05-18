@@ -13,6 +13,18 @@ export interface ImpressionsAndClicksChartProps {
   series?: ApexAxisChartSeries;
 }
 
+const combineDupes = (arr: { x: string; y: number }[]) => {
+  var hashMap = new Map();
+  arr.forEach((element) => {
+    if (hashMap.get(element.x))
+      hashMap.set(element.x, hashMap.get(element.x) + element.y);
+    else hashMap.set(element.x, element.y);
+  });
+  const result = Array.from(hashMap, ([x, y]) => ({ x, y }));
+
+  return result;
+};
+
 export const ImpressionsAndClicksChart = ({
   series,
 }: ImpressionsAndClicksChartProps) => {
@@ -40,9 +52,18 @@ export const ImpressionsAndClicksChart = ({
     const clickSeries =
       (series?.[1]?.data as ApexAxisChartSeries[1]["data"][]) ?? [];
 
-    if(impressionSeries.length <= 0 && clickSeries.length <= 0) return true;
+    if (impressionSeries.length <= 0 && clickSeries.length <= 0) return true;
 
     return false;
+  }, [series]);
+
+  const aggregatedSeries = useMemo(() => {
+    const impressionsData = combineDupes(series?.[0]?.data as any);
+    const clicksData = combineDupes(series?.[1]?.data as any);
+    return [
+      { name: series?.[0].name, data: impressionsData },
+      { name: series?.[1].name, data: clicksData },
+    ];
   }, [series]);
 
   const options: ApexOptions = {
@@ -142,17 +163,18 @@ export const ImpressionsAndClicksChart = ({
               <Typography variant="h4">{clickThroughRate}</Typography>
               <Typography variant="body1">Click through rate</Typography>
             </Stack>
-            {NoData ? 
-              <DashboardTooltip 
+            {NoData ? (
+              <DashboardTooltip
                 title='You currently have no metrics to display. 
                 Click the "CREATE NEW ADVERTISEMENT" button to add an advertisement. 
                 Once your advertisement is approved and starts generating clicks and impressions, the metrics will appear here.'
-                tooltipType={DashboardTooltipType.Warning}/> : null
-            }
+                tooltipType={DashboardTooltipType.Warning}
+              />
+            ) : null}
           </Stack>
           <ApexChart
             options={options}
-            series={series}
+            series={aggregatedSeries}
             type="line"
             width={1100}
             height={350}

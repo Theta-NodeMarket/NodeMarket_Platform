@@ -17,7 +17,11 @@ export default async function handler(
   if (!adId) return res.status(400).end();
 
   try {
-    const { data } = await supabase.from(promoTable).select().eq("ad_id", adId);
+    const { data } = await supabase
+      .from(promoTable)
+      .select()
+      .eq("ad_id", adId)
+      .order("date_key");
 
     return res.json(data);
   } catch (err) {
