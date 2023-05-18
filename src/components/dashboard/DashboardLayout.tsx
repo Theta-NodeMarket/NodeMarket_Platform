@@ -1,6 +1,7 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import ArticleIcon from "@mui/icons-material/Article";
 import {
   Box,
   Button,
@@ -23,7 +24,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren, useState } from "react";
 import { useRouter } from "next/router";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
 const drawerWidth = 200;
 
@@ -78,15 +79,17 @@ interface MenuItem {
   text: string;
   link: string;
   Icon: typeof SpaceDashboardIcon;
+  condition?: () => boolean;
 }
 
-const MENU_CONFIGURATION: MenuItem[] = [
-  { text: "Overview", link: "/dashboard", Icon: SpaceDashboardIcon },
-  { text: "Settings", link: "/settings", Icon: SettingsIcon },
-];
-
 export const DashboardLayout = ({ children }: PropsWithChildren) => {
+  const MENU_CONFIGURATION: MenuItem[] = [
+    { text: "Overview", link: "/dashboard", Icon: SpaceDashboardIcon },
+    { text: "Settings", link: "/settings", Icon: SettingsIcon },
+    { text: "Doctormentation", link: "/documentation", Icon: ArticleIcon },
+  ];
   const supabase = useSupabaseClient();
+  const user = useUser();
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
