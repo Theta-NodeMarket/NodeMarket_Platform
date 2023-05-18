@@ -254,7 +254,7 @@ function Dashboard() {
         <Grid item xs={12}>
           <Grid container spacing={"24px"}>
             <Grid item xs={12}>
-              {series ? <ImpressionsAndClicksChart series={series} /> : null}
+              {series ? <ImpressionsAndClicksChart user={user} series={series} /> : null}
             </Grid>
             <Grid item xs={12}>
               <AccordionTable

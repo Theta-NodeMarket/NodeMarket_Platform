@@ -13,7 +13,6 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
@@ -79,7 +78,7 @@ interface MenuItem {
   text: string;
   link: string;
   Icon: typeof SpaceDashboardIcon;
-  condition?: () => boolean;
+  requiresPromoter?: boolean;
 }
 
 export const DashboardLayout = ({ children }: PropsWithChildren) => {
@@ -89,9 +88,7 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
       text: "Documentation",
       link: "/documentation",
       Icon: ArticleIcon,
-      condition: () => {
-        return true;
-      },
+      requiresPromoter: true,
     },
     { text: "Settings", link: "/settings", Icon: SettingsIcon },
   ];
@@ -132,7 +129,8 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
         <DrawerHeader />
         <Divider />
         <List>
-          {MENU_CONFIGURATION.map(({ text, link, Icon }, index) => (
+          {MENU_CONFIGURATION.map(({ text, link, Icon, requiresPromoter }, index) =>
+          (requiresPromoter === true && user?.user_metadata?.role === "Promoter") || requiresPromoter === undefined ? (
             <ListItem
               key={text}
               disablePadding
@@ -159,7 +157,7 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-          ))}
+          ) : null)}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
