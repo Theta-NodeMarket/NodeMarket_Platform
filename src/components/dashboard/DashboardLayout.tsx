@@ -85,8 +85,15 @@ interface MenuItem {
 export const DashboardLayout = ({ children }: PropsWithChildren) => {
   const MENU_CONFIGURATION: MenuItem[] = [
     { text: "Overview", link: "/dashboard", Icon: SpaceDashboardIcon },
+    {
+      text: "Documentation",
+      link: "/documentation",
+      Icon: ArticleIcon,
+      condition: () => {
+        return true;
+      },
+    },
     { text: "Settings", link: "/settings", Icon: SettingsIcon },
-    { text: "Doctormentation", link: "/documentation", Icon: ArticleIcon },
   ];
   const supabase = useSupabaseClient();
   const user = useUser();
