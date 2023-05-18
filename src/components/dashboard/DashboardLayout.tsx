@@ -92,6 +92,7 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    router.reload();
   };
 
   return (
