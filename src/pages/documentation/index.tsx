@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
   Container,
@@ -53,14 +53,19 @@ const CopyTextButton = ({
 
 function Documentation({ url }: { url: string }) {
   const user = useUser();
+  const userId = useRef(user?.id);
   const [snackOpen, setSnackOpen] = useState(false);
+
+  useEffect(() => {
+    if (user?.id) userId.current = user.id;
+  }, [user]);
 
   const handleClickCopy = (text: string) => {
     setSnackOpen(true);
   };
 
-  const scriptCode = `<script async src="${url}/scripts/promoter?id=${
-    user?.id ?? "{your id}"
+  const scriptCode = `<script async src="${url}/api/scripts/${
+    userId.current ?? "{your id}"
   }"></script>`;
 
   const divCode = `<div class="theta-ad"></div>`;
