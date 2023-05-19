@@ -1,6 +1,18 @@
-import { Container, Card, Typography, Box } from "@mui/material";
-import styles from "./documentation.module.scss";
-import { withAuth } from "@/lib/withAuth";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import {
+  Container,
+  Card,
+  Typography,
+  Box,
+  IconButton,
+  Snackbar,
+} from "@mui/material";
+import hljs from "highlight.js/lib/common";
+import "highlight.js/styles/monokai-sublime.css";
+import { Roles, withRole } from "@/lib/withRole";
+import { useEffect, useState } from "react";
+import { useUser } from "@supabase/auth-helpers-react";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 const IntroductionSectionTextPart1 =
   "Getting started with NodeMarket is easy. We recommend that you have some HTML and CSS experience but being an expert is not required. Before we get started, be sure to check that you have access to the default HTML file (usually “index.html” or “default.htm”) for your website and have the ability to edit it.";
@@ -12,11 +24,83 @@ const GettingStartedSectionTextPart1 =
 const GettingStartedSectionTextPart2 =
   "Once this script is in your code, it will automatically request advertisements on your behalf. All that is left to do is copy and paste the code provided below, anywhere you would like to display advertisements.";
 const GettingStartedSectionTextPart3 =
-  "That‘s it. You are now all set to start earning TFUEL with the advertisements now displaying on your website.";
+  "That's it. You are now all set to start earning TFUEL with the advertisements now displaying on your website.";
 const GettingStartedSectionTextPart4 =
   "If you are having trouble setting advertisements up, see the examples below. If you are still having trouble, please reach out via email.";
 
-function Documentation() {
+const CopyTextButton = ({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick?: (text: string) => void;
+}) => {
+  const handleClick = () => {
+    navigator.clipboard.writeText(text);
+    onClick?.(text);
+  };
+  return (
+    <IconButton
+      style={{ position: "absolute", right: 8, top: 8 }}
+      onClick={handleClick}
+    >
+      <ContentCopyIcon />
+    </IconButton>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps<{ url: string }> = async (
+  context
+) => {
+  const host = context.req.headers.host ?? "localhost:3000";
+  const protocol = host.includes("localhost") ? "http://" : "https://";
+  const url = protocol + host;
+  console.log(url);
+  return { props: { url } };
+};
+
+function Documentation({
+  url,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const user = useUser();
+  const [snackOpen, setSnackOpen] = useState(false);
+
+  const handleClickCopy = (text: string) => {
+    setSnackOpen(true);
+  };
+
+  const scriptCode = `<script async src="${url}/scripts/promoter?id=${
+    user?.id ?? "<<yourId>>"
+  }"></script>`;
+
+  const divCode = `<div class="theta-ad"></div>`;
+
+  const exampleCode = `<!DOCTYPE html>
+<html lang="en">
+<head>
+\t<meta charset="UTF-8" />
+\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+\t<title>Your Website Title</title>
+</head>
+<body>
+\t<div class="theta-ad"></div>
+\t<!--Add as many of these divs to your code to display advertisements-->
+\t<div class="new-section">
+\t\t<div>
+\t\t\t<h1>Hello NodeMarket!</h1>
+\t\t</div>
+\t</div>
+\t<!--Add this script tag to retrieve advertisements and get credit for promoting them. -->
+\t${scriptCode}
+</body>
+</html>`;
+
+  useEffect(() => {
+    document.querySelectorAll<HTMLElement>("pre code").forEach((el) => {
+      hljs.highlightElement(el);
+    });
+  }, []);
+
   return (
     <Container fixed>
       <Card
@@ -39,8 +123,7 @@ function Documentation() {
 
         <Typography typography={"h6"} fontWeight={100} width={"100%"}>
           {IntroductionSectionTextPart1}
-          <br />
-          <br />
+
           {IntroductionSectionTextPart2}
         </Typography>
 
@@ -54,20 +137,17 @@ function Documentation() {
 
         <Box
           bgcolor={"#181818"}
+          position={"relative"}
           border={"solid 1px rgba(250, 250, 250, .25)"}
-          borderRadius={"5px"}
           display={"flex"}
           alignItems={"center"}
           width={"100%"}
-          padding={"6px"}
+          p={0}
         >
-          <pre>
-            <code className={styles.code}>
-              &lt;script async
-              src=&quot;http://localhost:3000/scripts/promoter?id=&lt;&lt;yourId&gt;&gt;&quot;
-              crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-            </code>
+          <pre style={{ width: "100%" }}>
+            <code className="html">{scriptCode}</code>
           </pre>
+          <CopyTextButton text={scriptCode} onClick={handleClickCopy} />
         </Box>
 
         <Typography typography={"h6"} fontWeight={100} width={"100%"}>
@@ -76,18 +156,17 @@ function Documentation() {
 
         <Box
           bgcolor={"#181818"}
+          position={"relative"}
           border={"solid 1px rgba(250, 250, 250, .25)"}
-          borderRadius={"5px"}
           display={"flex"}
           alignItems={"center"}
           width={"100%"}
-          padding={"6px"}
+          p={0}
         >
-          <pre>
-            <code className={styles.code}>
-              &lt;div class=&quot;theta-ad&quot;&gt;&lt;/div&gt;
-            </code>
+          <pre style={{ width: "100%" }}>
+            <code className="html">{divCode}</code>
           </pre>
+          <CopyTextButton text={divCode} onClick={handleClickCopy} />
         </Box>
 
         <Typography typography={"h6"} fontWeight={100} width={"100%"}>
@@ -101,61 +180,28 @@ function Documentation() {
         <Box
           bgcolor={"#181818"}
           border={"solid 1px rgba(250, 250, 250, .25)"}
-          borderRadius={"5px"}
           display={"flex"}
+          position={"relative"}
           alignItems={"center"}
           width={"100%"}
-          padding={"6px"}
+          p={0}
         >
-          <pre>
-            <code className={styles.code}>
-              &lt;!DOCTYPE html&gt;
-              <br />
-              &lt;html lang=&quot;en&quot;&gt;
-              <br />
-              &emsp;&lt;head&gt;
-              <br />
-              &emsp;&emsp;&lt;meta charset=&quot;UTF-8&quot; /&gt;
-              <br />
-              &emsp;&emsp;&lt;meta name=&quot;viewport&quot;
-              content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
-              <br />
-              &emsp;&emsp;&lt;title&gt;Your Website Title&lt;/title&gt;
-              <br />
-              &emsp;&lt;/head&gt;
-              <br />
-              &emsp;&lt;body&gt;
-              <br />
-              &emsp;&emsp;&lt;div class=&quot;theta-ad&quot;&gt;&lt;/div&gt;
-              &lt;!--Add as many of these divs to your code to display
-              advertisements--&gt;
-              <br />
-              &emsp;&emsp;&lt;div class=&quot;new-section&quot;&gt;
-              <br />
-              &emsp;&emsp;&emsp;&lt;div&gt;
-              <br />
-              &emsp;&emsp;&emsp;&emsp;&lt;h1&gt;Hello NodeMarket!&lt;/h1&gt;
-              <br />
-              &emsp;&emsp;&emsp;&lt;/div&gt;
-              <br />
-              &emsp;&emsp;&lt;/div&gt;
-              <br />
-              &emsp;&emsp;&lt;!--Add this script tag to retrieve advertisements
-              and get credit for promoting them. --&gt;
-              <br />
-              &emsp;&emsp;&lt;script async
-              src=&quot;http://localhost:3000/scripts/promoter?id=&lt;&lt;yourId&gt;&gt;&quot;
-              crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-              <br />
-              &emsp;&lt;/body&gt;
-              <br />
-              &lt;/html&gt;
+          <pre style={{ width: "100%" }}>
+            <code className="html" style={{ width: "100%" }}>
+              {exampleCode}
             </code>
           </pre>
+          <CopyTextButton text={exampleCode} onClick={handleClickCopy} />
         </Box>
       </Card>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={5000}
+        onClose={() => setSnackOpen(false)}
+        message="Text Copied!"
+      />
     </Container>
   );
 }
 
-export default withAuth(Documentation, "/sign-in");
+export default withRole(Documentation, Roles.Promoter, "/dashboard");

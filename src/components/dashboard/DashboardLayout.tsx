@@ -24,6 +24,7 @@ import Link from "next/link";
 import { PropsWithChildren, useState } from "react";
 import { useRouter } from "next/router";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { Roles } from "@/lib/withRole";
 
 const drawerWidth = 200;
 
@@ -78,24 +79,25 @@ interface MenuItem {
   text: string;
   link: string;
   Icon: typeof SpaceDashboardIcon;
-  requiresPromoter?: boolean;
+  condition?: () => boolean;
 }
 
 export const DashboardLayout = ({ children }: PropsWithChildren) => {
+  const supabase = useSupabaseClient();
+  const user = useUser();
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
   const MENU_CONFIGURATION: MenuItem[] = [
     { text: "Overview", link: "/dashboard", Icon: SpaceDashboardIcon },
     {
       text: "Documentation",
       link: "/documentation",
       Icon: ArticleIcon,
-      requiresPromoter: true,
+      condition: () => user?.user_metadata.role === Roles.Promoter,
     },
     { text: "Settings", link: "/settings", Icon: SettingsIcon },
   ];
-  const supabase = useSupabaseClient();
-  const user = useUser();
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -129,35 +131,36 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
         <DrawerHeader />
         <Divider />
         <List>
-          {MENU_CONFIGURATION.map(({ text, link, Icon, requiresPromoter }, index) =>
-          (requiresPromoter === true && user?.user_metadata?.role === "Promoter") || requiresPromoter === undefined ? (
-            <ListItem
-              key={text}
-              disablePadding
-              sx={{ display: "block" }}
-              onClick={() => router.push(link)}
-            >
-              <ListItemButton
-                selected={router.pathname === link}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
+          {MENU_CONFIGURATION.map(({ text, link, Icon, condition }, index) =>
+            !condition || condition() ? (
+              <ListItem
+                key={text}
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={() => router.push(link)}
               >
-                <ListItemIcon
+                <ListItemButton
+                  selected={router.pathname === link}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  <Icon />
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ) : null)}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Icon />
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ) : null
+          )}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

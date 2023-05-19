@@ -3,7 +3,7 @@ import { useDashboardAd, useDashboardAdStats } from "../../useDashboard";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { useMemo } from "react";
 import { AdStats } from "./AdStats";
-import { withAuth } from "@/lib/withAuth";
+import { Roles, withRole } from "@/lib/withRole";
 
 export interface AdDetailPageProps {
   adId: string;
@@ -56,4 +56,4 @@ const AdDetailPage = ({ adId }: AdDetailPageProps) => {
   );
 };
 
-export default withAuth(AdDetailPage, "/sign-in");
+export default withRole(AdDetailPage, Roles.Advertiser, "/sign-in");
