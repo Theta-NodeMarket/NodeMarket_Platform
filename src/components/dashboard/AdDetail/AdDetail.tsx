@@ -1,5 +1,5 @@
 import { Container, Grid } from "@mui/material";
-import { useDashboardAd, useDashboardAdStats } from "../../useDashboard";
+import { useDashboardAd, useDashboardAdStats } from "../useDashboard";
 import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { useMemo } from "react";
 import { AdStats } from "./AdStats";
@@ -56,4 +56,4 @@ const AdDetailPage = ({ adId }: AdDetailPageProps) => {
   );
 };
 
-export default withRole(AdDetailPage, Roles.Advertiser, "/sign-in");
+export default withRole(AdDetailPage, Roles.Advertiser, "/dashboard");

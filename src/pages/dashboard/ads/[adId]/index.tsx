@@ -1,7 +1,5 @@
 import { DashboardLayout } from "@/components/dashboard";
-import { useRedirectIfNotUser } from "@/hooks";
-import { CircularProgress } from "@mui/material";
-import AdDetailPage from "./AdDetail";
+import AdDetailPage from "../../../../components/dashboard/AdDetail/AdDetail";
 import { useRouter } from "next/router";
 
 export default function DashboardPage() {

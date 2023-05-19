@@ -2,20 +2,31 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { ModalContext } from "../../pages/dashboard/dashboard";
 import styles from "./createAdvertisementForm.module.scss";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import DashboardTooltip from "../tooltips/DashboardTooltip";
 import { DashboardTooltipType } from "@/types/DashboardTooltipType";
+import { ModalContext } from "@/pages/dashboard";
 
 interface formProps {
   submissionErrorMessage: string;
 }
 
 export default function CreateAdvertisementForm(props: formProps) {
-  const { adName, setAdName, redirectLink, setRedirectLink, file, setFile, adNameError, redirectLinkError, fileError, validateAdNameInput, validateRedirectLinkInput } =
-    React.useContext(ModalContext);
+  const {
+    adName,
+    setAdName,
+    redirectLink,
+    setRedirectLink,
+    file,
+    setFile,
+    adNameError,
+    redirectLinkError,
+    fileError,
+    validateAdNameInput,
+    validateRedirectLinkInput,
+  } = React.useContext(ModalContext);
 
   const handleAdNameUpdate = (value: string) => {
     setAdName(value);
@@ -32,29 +43,28 @@ export default function CreateAdvertisementForm(props: formProps) {
   return (
     <form>
       <Grid container gap={3}>
-        <Grid 
-          item 
-          xs={12} 
+        <Grid
+          item
+          xs={12}
           sx={{
             display: "flex",
-            direction:"row",
+            direction: "row",
             alignItems: "center",
-            justifyContent: "space-around"
-            }}>
-
-          {props.submissionErrorMessage.length > 0 ? 
+            justifyContent: "space-around",
+          }}
+        >
+          {props.submissionErrorMessage.length > 0 ? (
             <>
               <Typography variant="body1" color={"#FF0000"}>
                 {props.submissionErrorMessage}
-              </Typography> 
-              <DashboardTooltip 
+              </Typography>
+              <DashboardTooltip
                 title="We currently only support MetaMask. 
-                To create advertisements, download the MetaMask extension and create a wallet." 
-                tooltipType={DashboardTooltipType.Error}/>
-            </> :
-            null
-          }
-          
+                To create advertisements, download the MetaMask extension and create a wallet."
+                tooltipType={DashboardTooltipType.Error}
+              />
+            </>
+          ) : null}
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -96,10 +106,7 @@ export default function CreateAdvertisementForm(props: formProps) {
         </Grid>
 
         <Grid item xs={12}>
-          <Stack
-            direction={"column"}
-            alignItems={"flex-start"}
-          >
+          <Stack direction={"column"} alignItems={"flex-start"}>
             <Button variant="contained" component="label">
               Upload media *
               <input
@@ -112,7 +119,15 @@ export default function CreateAdvertisementForm(props: formProps) {
                 }}
               />
             </Button>
-            <Typography sx={{fontSize: ".75rem", marginTop: "3px", lineHeight: "1.66", letterSpacing: "0.03333em", color: "#FF0000"}}>
+            <Typography
+              sx={{
+                fontSize: ".75rem",
+                marginTop: "3px",
+                lineHeight: "1.66",
+                letterSpacing: "0.03333em",
+                color: "#FF0000",
+              }}
+            >
               {fileError.length > 0 ? fileError : ""}
             </Typography>
           </Stack>
