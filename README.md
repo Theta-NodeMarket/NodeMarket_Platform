@@ -15,4 +15,5 @@ This Next.js application serves as our primary platform through which users inte
 - Updating the impression count associated with an advertisement and its respective promoter.
 
 Want to get started? Click the link below:
+
 https://node-market-platform.vercel.app/
