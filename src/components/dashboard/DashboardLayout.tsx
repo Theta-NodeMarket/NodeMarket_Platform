@@ -96,7 +96,6 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
       Icon: ArticleIcon,
       condition: () => user?.user_metadata.role === Roles.Promoter,
     },
-    { text: "Settings", link: "/settings", Icon: SettingsIcon },
   ];
 
   const handleSignOut = async () => {
