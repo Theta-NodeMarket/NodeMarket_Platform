@@ -64,7 +64,7 @@ function Documentation({ url }: { url: string }) {
     setSnackOpen(true);
   };
 
-  const scriptCode = `<script async src="${url}/api/scripts/${
+  const scriptCode = `<script defer src="${url}/api/scripts/${
     userId.current ?? "{your id}"
   }"></script>`;
 
@@ -76,6 +76,8 @@ function Documentation({ url }: { url: string }) {
 \t<meta charset="UTF-8" />
 \t<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 \t<title>Your Website Title</title>
+\t<!--Add this script tag to retrieve advertisements and get credit for promoting them. -->
+\t${scriptCode}
 </head>
 <body>
 \t<div class="theta-ad"></div>
@@ -85,8 +87,6 @@ function Documentation({ url }: { url: string }) {
 \t\t\t<h1>Hello NodeMarket!</h1>
 \t\t</div>
 \t</div>
-\t<!--Add this script tag to retrieve advertisements and get credit for promoting them. -->
-\t${scriptCode}
 </body>
 </html>`;
 
