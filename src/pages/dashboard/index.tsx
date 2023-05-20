@@ -199,7 +199,7 @@ function Dashboard() {
       setSubmitError(response);
       return; // if theta says no.
     }
-    const thetaToken = (await response.json()).key as string;
+    const thetaToken = (await response?.json()).key as string;
     // if success:
     // setToken = "";
     setToken(thetaToken);

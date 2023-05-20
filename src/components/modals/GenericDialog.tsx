@@ -20,13 +20,13 @@ export default function GenericDialog(props: IModalProps) {
   return (
     <div>
       <Dialog open={props.modalOpen}>
-        <DialogTitle style={{ background: glassCardBgSettings }}>
+        <DialogTitle>
           {props.modalTitle}
         </DialogTitle>
-        <DialogContent style={{ background: glassCardBgSettings }}>
+        <DialogContent>
           {props.modalContent}
         </DialogContent>
-        <DialogActions style={{ background: glassCardBgSettings }}>
+        <DialogActions>
           <Button
             onClick={() => {
               props.onCancel?.();

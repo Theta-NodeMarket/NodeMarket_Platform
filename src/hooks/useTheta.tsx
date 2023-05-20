@@ -36,18 +36,25 @@ const sendFileToTheta = async (file: File) => {
 
   const headers = new Headers();
   headers.append("x-theta-edgestore-auth", token);
-
-  console.log(file);
+  
   const form = new FormData();
   form.append("directory", file, `./${file.name}`);
+  
+  try{
+    const res = await fetch(thetaUploadUrl, {
+      method: "POST",
+      body: form,
+      headers,
+    });
+    
+    return res;
+  } 
+  catch 
+  {
+    var res = "Could not recieve response from Theta. Try again later!";
+    return res;
+  }
 
-  const res = await fetch(thetaUploadUrl, {
-    method: "POST",
-    body: form,
-    headers,
-  });
-
-  return res;
 };
 
 export const useTheta = () => {
