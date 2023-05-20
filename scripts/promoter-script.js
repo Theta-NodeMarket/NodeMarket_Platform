@@ -6,7 +6,7 @@ const THETA_AD_SELECTOR = ".theta-ad";
 const IMAGE_PARAMS =
   "style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
 const VIDEO_PARAMS =
-  "playsinline autoplay muted loop style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
+  "playsinline autoplay muted defaultMuted preload='auto' loop style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
 
 /**
  * @param {string} selector CSS Selector to search for elements
