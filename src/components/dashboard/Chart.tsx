@@ -9,12 +9,10 @@ import { DashboardTooltipType } from "@/types/DashboardTooltipType";
 // https://github.com/apexcharts/react-apexcharts/issues/240#issuecomment-1077335256
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const ADVERTISER_NO_DATA_WARNING = 'You currently have no metrics to display. Click the "CREATE NEW ADVERTISEMENT" button to add an advertisement. Once your advertisement is approved and starts generating clicks and impressions, the metrics will appear here.';
-const PROMOTER_NO_DATA_WARNING = 'You currently have no metrics to display. Navigate to the documentation page to get advertisements on your website. Once your website is displaying advertisements, the metrics will appear here.';
-
 export interface ImpressionsAndClicksChartProps {
   series?: ApexAxisChartSeries;
   user? : any;
+  warningText: string;
 }
 
 const combineDupes = (arr: { x: string; y: number }[]) => {
@@ -30,7 +28,7 @@ const combineDupes = (arr: { x: string; y: number }[]) => {
 };
 
 export const ImpressionsAndClicksChart = ({
-  series, user
+  series, warningText
 }: ImpressionsAndClicksChartProps) => {
   const totalClicks = useMemo(() => {
     const clickSeries =
@@ -169,7 +167,7 @@ export const ImpressionsAndClicksChart = ({
             </Stack>
             {NoData ? (
               <DashboardTooltip
-                title={user?.user_metadata?.role === "Promoter" ? PROMOTER_NO_DATA_WARNING : ADVERTISER_NO_DATA_WARNING}
+                title={warningText}
                 tooltipType={DashboardTooltipType.Warning}
               />
             ) : null}

@@ -140,6 +140,7 @@ function SignIn() {
                   variant="standard"
                   fullWidth
                   autoComplete="email"
+                  autoFocus
                   value={state.email}
                   onChange={(e) => handleEmailChange(e)}
                 />
@@ -154,7 +155,7 @@ function SignIn() {
                   type="password"
                   variant="standard"
                   fullWidth
-                  autoComplete="current-password"
+                  autoComplete="off"
                   value={state.password}
                   onChange={(e) => handlePasswordChange(e)}
                 />

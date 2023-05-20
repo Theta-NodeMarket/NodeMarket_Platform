@@ -19,7 +19,7 @@ import {
 } from "../../components/dashboard/useDashboard";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { supabase } from "@/utils/supabase";
-import { acceptedFileTypes } from "@/utils/consts";
+import { ADVERTISER_DASHBOARD_NO_DATA_WARNING, ADVERTISER_NO_DATA_WARNING, PROMOTER_NO_DATA_WARNING, acceptedFileTypes } from "@/utils/consts";
 import { AdWithStats } from "@/models/api";
 import { withAuth } from "@/lib/withAuth";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -262,7 +262,7 @@ function Dashboard() {
           <Grid container spacing={"24px"}>
             <Grid item xs={12}>
               {series ? (
-                <ImpressionsAndClicksChart user={user} series={series} />
+                <ImpressionsAndClicksChart series={series} warningText={user?.user_metadata?.role === "Promoter" ? PROMOTER_NO_DATA_WARNING : `${ADVERTISER_NO_DATA_WARNING} ${ADVERTISER_DASHBOARD_NO_DATA_WARNING}`} />
               ) : null}
             </Grid>
             <Grid item xs={12}>

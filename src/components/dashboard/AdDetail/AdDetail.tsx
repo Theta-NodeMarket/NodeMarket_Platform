@@ -4,12 +4,15 @@ import { ImpressionsAndClicksChart } from "@/components/dashboard/Chart";
 import { useMemo } from "react";
 import { AdStats } from "./AdStats";
 import { Roles, withRole } from "@/lib/withRole";
+import { useUser } from "@supabase/auth-helpers-react";
+import { ADVERTISER_DETAILS_NO_DATA_WARNING, ADVERTISER_NO_DATA_WARNING, PROMOTER_NO_DATA_WARNING } from "@/utils/consts";
 
 export interface AdDetailPageProps {
   adId: string;
 }
 
 const AdDetailPage = ({ adId }: AdDetailPageProps) => {
+  const user = useUser();
   const { ad, error: adError } = useDashboardAd(adId);
   const { stats, error: statsError } = useDashboardAdStats(adId);
 
@@ -47,7 +50,7 @@ const AdDetailPage = ({ adId }: AdDetailPageProps) => {
               {ad ? <AdStats ad={ad} /> : null}
             </Grid>
             <Grid item xs={12}>
-              {series ? <ImpressionsAndClicksChart series={series} /> : null}
+              {series ? <ImpressionsAndClicksChart series={series} warningText={user?.user_metadata?.role === "Promoter" ? PROMOTER_NO_DATA_WARNING : `${ADVERTISER_NO_DATA_WARNING} ${ADVERTISER_DETAILS_NO_DATA_WARNING}`} /> : null}
             </Grid>
           </Grid>
         </Grid>
