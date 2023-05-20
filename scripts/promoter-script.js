@@ -51,7 +51,7 @@ function injectAdIntoSlot(ad, slotElement) {
       ? IMAGE_PARAMS
       : VIDEO_PARAMS;
 
-  const thetaAdHTML = media_type === "image" ? `<${media_type} src=${src} ${params} alt=${ad_name} />` : `<${media_type} ${params} alt=${ad_name}><source src=${src}></source></${media_type}`;
+  const thetaAdHTML = `<${media_type} src=${src} ${params} alt=${ad_name} />`;
 
   slotElement.innerHTML = thetaAdHTML;
 
