@@ -15,6 +15,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import { Roles, withRole } from "@/lib/withRole";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { MAINGREEN } from "@/utils/consts";
 
 const IntroductionSectionTextPart1 =
   "Getting started with NodeMarket is easy. We recommend that you have some HTML and CSS experience but being an expert is not required. Before we get started, be sure to check that you have access to the default HTML file (usually “index.html” or “default.htm”) for your website and have the ability to edit it.";
@@ -112,7 +113,7 @@ function Documentation({ url }: { url: string }) {
           width: "100%",
         }}
       >
-        <Typography typography={"h5"} width={"100%"}>
+        <Typography typography={"h5"} width={"100%"} color={MAINGREEN}>
           Introduction
         </Typography>
 
@@ -122,7 +123,7 @@ function Documentation({ url }: { url: string }) {
           {IntroductionSectionTextPart2}
         </Typography>
 
-        <Typography typography={"h5"} width={"100%"}>
+        <Typography typography={"h5"} width={"100%"} color={MAINGREEN}>
           Get started
         </Typography>
 
