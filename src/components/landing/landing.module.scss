@@ -14,9 +14,9 @@
 }
 
 .cta {
-  margin: 36px 0;
-  font-size: 20px;
-  transition: all 0.3s ease-in-out;
+  margin: 36px 0 !important; 
+  font-size: 20px !important;
+  transition: all 0.3s ease-in-out !important;
 
   &:hover,
   &:focus {
