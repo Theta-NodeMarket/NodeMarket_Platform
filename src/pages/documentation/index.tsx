@@ -22,7 +22,7 @@ const IntroductionSectionTextPart2 =
   "While developing the NodeMarket platform, we opted to leave the positioning and styling of advertisements in your hands. Giving you full control on where and how to show advertisements on your website. NodeMarket’s servers will handle delivering advertisements, while you are responsible for adding our script to your default HTML file and <div> tags with our special class anywhere you want to display advertisements.";
 
 const GettingStartedSectionTextPart1 =
-  "To get started, copy the code provided below and paste it into the bottom of the <body> tag in your default HTML file. This script is unique to you and takes care of giving you credit for the advertisements you promote.";
+  "To get started, copy the code provided below and paste it into the bottom of the <body> tag or within the <head> tag in your default HTML file. This script is unique to you and takes care of giving you credit for the advertisements you promote.";
 const GettingStartedSectionTextPart2 =
   "Once this script is in your code, it will automatically request advertisements on your behalf. All that is left to do is copy and paste the code provided below, anywhere you would like to display advertisements.";
 const GettingStartedSectionTextPart3 =
