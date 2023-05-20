@@ -6,7 +6,7 @@ const THETA_AD_SELECTOR = ".theta-ad";
 const IMAGE_PARAMS =
   "style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
 const VIDEO_PARAMS =
-  "playsinline autoplay muted defaultMuted preload='auto' loop style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
+  "playsinline autoplay muted defaultMuted loop style='max-height: 300px; max-width: auto; display: block; margin: 30px auto; cursor: pointer;'";
 
 /**
  * @param {string} selector CSS Selector to search for elements
@@ -51,7 +51,7 @@ function injectAdIntoSlot(ad, slotElement) {
       ? IMAGE_PARAMS
       : VIDEO_PARAMS;
 
-  const thetaAdHTML = `<${media_type} src=${src} ${params} alt=${ad_name} />`;
+  const thetaAdHTML = media_type === "image" ? `<${media_type} src=${src} ${params} alt=${ad_name} />` : `<${media_type} ${params} alt=${ad_name}><source src=${src}></source></${media_type}`;
 
   slotElement.innerHTML = thetaAdHTML;
 
