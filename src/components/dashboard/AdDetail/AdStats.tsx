@@ -135,7 +135,14 @@ export const AdStats = ({ ad }: AdStatsProps) => {
                   },
                 }}
               >
-                <IconButton className={styles.deactivateAdButton}>
+                <IconButton sx={{
+                  position: "absolute",
+                  right: 0,
+                  bottom: 0,
+                  margin: "10px",
+                  backgroundColor: "#FAFAFA",
+                  color: "#FF0000"
+                }}>
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>

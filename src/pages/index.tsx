@@ -1,4 +1,4 @@
-import Landing from "@/components/landing/landing";
+import Landing from "../components/landing/index";
 import Layout from "@/components/layout";
 import React from "react";
 
