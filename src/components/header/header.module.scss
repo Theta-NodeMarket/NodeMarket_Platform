@@ -5,6 +5,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 36px 30px;
+  gap: 15px;
 
   @media screen and (max-width: 1000px) {
     flex-direction: column;
@@ -19,6 +20,8 @@
   ul {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
     list-style: none;
     font-size: 25px;
     gap: 30px;
@@ -31,4 +34,17 @@
   align-items: center;
   gap: 10px;
   font-size: 25px;
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    gap: 15px;
+  }
+
+  .links {
+    ul {
+      font-size: 16px;
+      text-decoration: underline;
+    }
+  }
 }

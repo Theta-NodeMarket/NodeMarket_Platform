@@ -1,5 +1,5 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import SettingsIcon from "@mui/icons-material/Settings";
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import ArticleIcon from "@mui/icons-material/Article";
 import {
@@ -25,6 +25,7 @@ import { PropsWithChildren, useState } from "react";
 import { useRouter } from "next/router";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { Roles } from "@/lib/withRole";
+import { type } from "@/lib/withApproval";
 
 const drawerWidth = 200;
 
@@ -95,6 +96,12 @@ export const DashboardLayout = ({ children }: PropsWithChildren) => {
       link: "/documentation",
       Icon: ArticleIcon,
       condition: () => user?.user_metadata.role === Roles.Promoter,
+    },
+    {
+      text: "Admin",
+      link: "/admin-approval",
+      Icon: SupervisorAccountIcon,
+      condition: () => user?.user_metadata.type === type.ad,
     },
   ];
 
