@@ -216,7 +216,7 @@ function Dashboard() {
     };
 
     // Upload to our db
-    var uploadToDbResp = await fetch(`${createAdUrl}?authId=${data.user?.id}`, {
+    var uploadToDbResp = await fetch(`${createAdUrl}?authId=${user?.id}`, {
       method: "POST",
       body: JSON.stringify(adData),
       headers: new Headers({
