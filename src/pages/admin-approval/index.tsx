@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { Container, Stack, Button, Typography } from "@mui/material";
 import { useUser } from "@supabase/auth-helpers-react";
 import { type, withApproval } from "@/lib/withApproval";
@@ -20,6 +21,14 @@ function Approval() {
     if (adIndex >= ads.length) return null;
 
     return ads[adIndex].ad_name;
+  };
+
+  const GetAdLink = () => {
+    if (!ads) return;
+
+    if (adIndex >= ads.length) return null;
+
+    return ads[adIndex].redirect_link;
   };
 
   const DisplayAd = () => {
@@ -121,6 +130,11 @@ function Approval() {
       }}
     >
       <Typography variant="h5">{GetAdName()}</Typography>
+      <Typography variant="h6">
+        <Link href={GetAdLink() ?? ""} target="_blank">
+          {GetAdLink()}
+        </Link>
+      </Typography>
       <Stack
         direction={"column"}
         spacing={"30px"}

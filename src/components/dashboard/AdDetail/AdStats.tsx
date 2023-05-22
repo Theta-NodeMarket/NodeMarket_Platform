@@ -5,7 +5,6 @@ import { glassCardBgSettings, thetaDataUrl } from "@/utils/consts";
 import { DetailsCallout } from "@/components/dashboard/detailsCallout";
 import { useRouter } from "next/router";
 import DeleteIcon from "@mui/icons-material/Delete";
-import styles from "./AdStats.module.scss";
 import GenericDialog from "@/components/modals/GenericDialog";
 
 export interface AdStatsProps {
@@ -17,7 +16,16 @@ const deleteAdUrl = "/api/dashboard/campaigns";
 export const RenderMedia = ({ ad }: AdStatsProps) => {
   const srcUrl = `${thetaDataUrl}${ad.token}`;
   if (ad.media_type.includes("video"))
-    return <video src={srcUrl} height="100%" width="100%" autoPlay controls style={{objectFit: "cover"}} />;
+    return (
+      <video
+        src={srcUrl}
+        height="100%"
+        width="100%"
+        autoPlay
+        controls
+        style={{ objectFit: "cover" }}
+      />
+    );
   if (ad.media_type.includes("image"))
     return (
       <img
@@ -135,14 +143,16 @@ export const AdStats = ({ ad }: AdStatsProps) => {
                   },
                 }}
               >
-                <IconButton sx={{
-                  position: "absolute",
-                  right: 0,
-                  bottom: 0,
-                  margin: "10px",
-                  backgroundColor: "#FAFAFA",
-                  color: "#FF0000"
-                }}>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 0,
+                    bottom: 0,
+                    margin: "10px",
+                    backgroundColor: "#FAFAFA",
+                    color: "#FF0000",
+                  }}
+                >
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
