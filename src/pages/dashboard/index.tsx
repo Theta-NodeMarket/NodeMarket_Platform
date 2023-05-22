@@ -77,8 +77,8 @@ const createRows = (ads: AdWithStats[] = []) =>
 function Dashboard() {
   const user = useUser();
   const { sendFileToTheta } = useTheta();
-  const { ads } = useDashboardAds(user?.id);
-  const { stats } = useDashboardStats(user?.id);
+  const { ads } = useDashboardAds();
+  const { stats } = useDashboardStats();
 
   const [opened, setOpened] = useState(false);
   const [adName, setAdName] = useState("");
@@ -262,7 +262,14 @@ function Dashboard() {
           <Grid container spacing={"24px"}>
             <Grid item xs={12}>
               {series ? (
-                <ImpressionsAndClicksChart series={series} warningText={user?.user_metadata?.role === "Promoter" ? PROMOTER_NO_DATA_WARNING : `${ADVERTISER_NO_DATA_WARNING} ${ADVERTISER_DASHBOARD_NO_DATA_WARNING}`} />
+                <ImpressionsAndClicksChart
+                  series={series}
+                  warningText={
+                    user?.user_metadata?.role === "Promoter"
+                      ? PROMOTER_NO_DATA_WARNING
+                      : `${ADVERTISER_NO_DATA_WARNING} ${ADVERTISER_DASHBOARD_NO_DATA_WARNING}`
+                  }
+                />
               ) : null}
             </Grid>
             <Grid item xs={12}>

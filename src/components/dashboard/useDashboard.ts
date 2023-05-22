@@ -1,39 +1,53 @@
 import { useFetchEffect } from "@/hooks/useFetch";
+import { Roles } from "@/lib/withRole";
 import { AdWithStats, Advertisement, Statistic } from "@/models/api";
-import { supabase } from "@/utils/supabase";
+import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 
 const adsUrl = "/api/dashboard/campaigns";
 const statsUrl = "/api/dashboard/stats";
+const promoterAdUrl = "/api/dashboard/promoters/campaigns";
+const promoterStatUrl = "/api/dashboard/promoters/statistics";
 
-export const useDashboardAds = (authId?: string) => {
+export const useDashboardAds = () => {
+  const user = useUser();
   const [ads, setAds] = useState<AdWithStats[]>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
     const getAds = async () => {
-      const url = `${adsUrl}?authId=${authId}`;
+      if (!user) return [];
+      const role = user.user_metadata.role;
+      const url = `${
+        role === Roles.Advertiser ? adsUrl : promoterAdUrl
+      }?authId=${user.id}`;
       const response = await fetch(url);
       return await response.json();
     };
 
-    authId && getAds().then(setAds).catch(setError);
-  }, [authId]);
+    getAds().then(setAds).catch(setError);
+  }, [user]);
 
   return { ads, error };
 };
 
-export const useDashboardStats = (authId?: string) => {
+export const useDashboardStats = () => {
+  const user = useUser();
   const [stats, setStats] = useState<Statistic[]>();
   const [error, setError] = useState<Error>();
+
   useEffect(() => {
     const getStats = async () => {
-      const url = `${statsUrl}?authId=${authId}`;
+      if (!user) return [];
+      const role = user.user_metadata.role;
+      const url = `${
+        role === Roles.Advertiser ? statsUrl : promoterStatUrl
+      }?authId=${user.id}`;
       const response = await fetch(url);
       return await response.json();
     };
-    authId && getStats().then(setStats).catch(setError);
-  }, [authId]);
+    getStats().then(setStats).catch(setError);
+  }, [user]);
 
   return { stats, error };
 };

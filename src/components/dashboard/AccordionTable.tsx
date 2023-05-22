@@ -20,6 +20,8 @@ import {
   Grid,
   Button,
 } from "@mui/material";
+import { useUser } from "@supabase/auth-helpers-react";
+import { Roles } from "@/lib/withRole";
 
 interface AccordionTableRowProps {
   row: AccordionTableRow;
@@ -130,6 +132,7 @@ export const AccordionTable = ({
 }: AccordionTableProps) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pageRowCount);
+  const user = useUser();
 
   const visibleRows = useMemo(
     () =>
@@ -151,18 +154,20 @@ export const AccordionTable = ({
           <Grid item xs={6} md={8}>
             <Typography variant="h6">Advertisements</Typography>
           </Grid>
-          <Grid item xs={6} md={4}>
-            <Button
-              startIcon={<AddRoundedIcon />}
-              fullWidth
-              variant="contained"
-              onClick={() => {
-                setModalOpen?.(true);
-              }}
-            >
-              Create new advertisement
-            </Button>
-          </Grid>
+          {user && user.user_metadata.role === Roles.Advertiser ? (
+            <Grid item xs={6} md={4}>
+              <Button
+                startIcon={<AddRoundedIcon />}
+                fullWidth
+                variant="contained"
+                onClick={() => {
+                  setModalOpen?.(true);
+                }}
+              >
+                Create new advertisement
+              </Button>
+            </Grid>
+          ) : null}
         </Grid>
       </Grid>
       <Grid item xs={12}>
