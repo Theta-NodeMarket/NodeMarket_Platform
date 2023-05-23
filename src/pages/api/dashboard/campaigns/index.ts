@@ -31,9 +31,11 @@ export default async function handler(
           const { data } = await supabase
             .from(promoTable)
             .select()
-            .eq("ad_id", ad.id)
-            .eq("auth_id", authId);
+            // todo: research batch query
+            // .in()?
+            .eq("ad_id", ad.id);
 
+          console.log(data);
           const impressions = data?.reduce(
             (prev, { impressions }) => prev + impressions,
             0
