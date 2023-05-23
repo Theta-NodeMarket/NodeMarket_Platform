@@ -19,33 +19,32 @@ export default async function handler(
   if (req.method === "GET") {
     // get all a user's advertisements
     try {
-      const { data } = await supabase
+      const { data: campaigns } = await supabase
         .from(campaignTable)
         .select(`${adTable} (*)`)
         .eq("auth_id", authId);
 
-      const ads = data?.map((data) => data?.advertisements) as Advertisement[];
+      const ads = campaigns?.map(
+        (data) => data?.advertisements
+      ) as Advertisement[];
+      const adIds = ads?.map((ad) => ad.id);
 
-      const promos = await Promise.all(
-        ads?.map(async (ad) => {
-          const { data } = await supabase
-            .from(promoTable)
-            .select()
-            // todo: research batch query
-            // .in()?
-            .eq("ad_id", ad.id);
+      const { data: promos } = await supabase
+        .from(promoTable)
+        .select()
+        .in("ad_id", adIds);
 
-          console.log(data);
-          const impressions = data?.reduce(
-            (prev, { impressions }) => prev + impressions,
-            0
-          );
-          const clicks = data?.reduce((prev, { clicks }) => prev + clicks, 0);
-          return { ...ad, clicks, impressions } as AdWithStats;
-        })
-      );
+      const results = ads.map((ad) => {
+        const adPromos = promos?.filter((promo) => promo.ad_id === ad.id);
+        const impressions = adPromos?.reduce(
+          (prev, curr) => prev + curr.impressions,
+          0
+        );
+        const clicks = adPromos?.reduce((prev, curr) => prev + curr.clicks, 0);
+        return { ...ad, clicks, impressions };
+      });
 
-      return res.json(promos);
+      return res.json(results);
     } catch (err) {
       return res.status(500).json(err);
     }
