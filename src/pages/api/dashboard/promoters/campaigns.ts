@@ -21,7 +21,7 @@ export default async function handler(
       .from(promoTable)
       .select(`*, ${adTable} (ad_name)`)
       .eq("auth_id", authId);
-    return res.json(ads);
+    return res.json(ads?.map((ad) => ({ ...ad, ...ad.advertisements })));
   } catch (err) {
     return res.json(err);
   }

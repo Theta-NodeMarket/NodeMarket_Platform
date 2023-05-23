@@ -19,13 +19,21 @@ import {
 } from "../../components/dashboard/useDashboard";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { supabase } from "@/utils/supabase";
-import { ADVERTISER_DASHBOARD_NO_DATA_WARNING, ADVERTISER_NO_DATA_WARNING, PROMOTER_NO_DATA_WARNING, acceptedFileTypes } from "@/utils/consts";
+import {
+  ADVERTISER_DASHBOARD_NO_DATA_WARNING,
+  ADVERTISER_NO_DATA_WARNING,
+  PROMOTER_NO_DATA_WARNING,
+  acceptedFileTypes,
+} from "@/utils/consts";
 import { AdWithStats } from "@/models/api";
 import { withAuth } from "@/lib/withAuth";
 import { useUser } from "@supabase/auth-helpers-react";
+import { Roles } from "@/lib/withRole";
+import { useRole } from "@/hooks/useRole";
 
 const createAdUrl = "/api/dashboard/campaigns";
-const URL_REGEX_REDIRECT_LINK = /^((https?|ftp):)?\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
+const URL_REGEX_REDIRECT_LINK =
+  /^((https?|ftp):)?\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
 
 interface FormParams {
   adName: string;
@@ -59,12 +67,17 @@ const Status = ({ status }: { status: string }) => {
   );
 };
 
-const createRows = (ads: AdWithStats[] = []) =>
+const createRows = (ads: AdWithStats[] = [], role?: Roles) =>
   ads.map(
     (ad, index) =>
       ({
         data: {
-          name: <Link href={`/dashboard/ads/${ad.id}`}>{ad.ad_name}</Link>,
+          name:
+            role === "Advertiser" ? (
+              <Link href={`/dashboard/ads/${ad.id}`}>{ad.ad_name}</Link>
+            ) : (
+              <>{ad.ad_name}</>
+            ),
           status: <Status status={ad.status} />,
         },
         extraData: {
@@ -75,7 +88,7 @@ const createRows = (ads: AdWithStats[] = []) =>
   );
 
 function Dashboard() {
-  const user = useUser();
+  const { user, role } = useRole();
   const { sendFileToTheta } = useTheta();
   const { ads } = useDashboardAds();
   const { stats } = useDashboardStats();
@@ -140,12 +153,12 @@ function Dashboard() {
 
   const validateRedirectLinkInput = () => {
     let isValid = true;
-    if(!URL_REGEX_REDIRECT_LINK.test(redirectLink))
-    {
-      setRedirectLinkError("A valid redirect link is required. Ie: https://www.google.com/");
+    if (!URL_REGEX_REDIRECT_LINK.test(redirectLink)) {
+      setRedirectLinkError(
+        "A valid redirect link is required. Ie: https://www.google.com/"
+      );
       isValid = false;
-    }
-    else {
+    } else {
       setRedirectLinkError("");
     }
 
@@ -207,7 +220,6 @@ function Dashboard() {
     // setToken = "";
     setToken(thetaToken);
 
-    const { data } = await supabase.auth.getUser();
     const adData = {
       token: thetaToken,
       adName,
@@ -265,7 +277,7 @@ function Dashboard() {
                 <ImpressionsAndClicksChart
                   series={series}
                   warningText={
-                    user?.user_metadata?.role === "Promoter"
+                    role === "Promoter"
                       ? PROMOTER_NO_DATA_WARNING
                       : `${ADVERTISER_NO_DATA_WARNING} ${ADVERTISER_DASHBOARD_NO_DATA_WARNING}`
                   }
@@ -275,7 +287,7 @@ function Dashboard() {
             <Grid item xs={12}>
               <AccordionTable
                 setModalOpen={setOpened}
-                rows={createRows(ads)}
+                rows={createRows(ads, role)}
                 columns={COLUMNS}
               />
             </Grid>
