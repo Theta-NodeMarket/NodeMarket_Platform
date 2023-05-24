@@ -20,7 +20,8 @@ export default async function handler(
     const { data: ads } = await supabase
       .from(promoTable)
       .select()
-      .eq("auth_id", authId);
+      .eq("auth_id", authId)
+      .order("date_key", { ascending: true });
 
     return res.json(ads);
   } catch (err) {
